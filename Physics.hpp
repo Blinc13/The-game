@@ -1,8 +1,0 @@
-//////////////////////////By Blinc13/////////////////////////////////
-struct speedXY
-{
-  float x,y;
-
-
-  float MaxSpeed;
-};
