@@ -27,8 +27,8 @@ int main()
   Ui ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
   window.setFramerateLimit(60);
   imageArea area={0,0,16,29};
-  Hero hero("Sprites/Souls/Herous/character.png",area,sf::Vector2f(30,30),10);
-  Enemy person("Sprites/Ui/Center.png",{150,150,16,16},{19*16,2*16});
+  Hero hero("Sprites/Souls/Herous/character.png",area,sf::Vector2f(2*16,2*16),10);
+  Enemy person("Sprites/Ui/Center.png",{150,150,16,16},{17*16,4*16});
   Cam View;
   sf::Clock Timer;
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);

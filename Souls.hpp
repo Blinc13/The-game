@@ -160,6 +160,8 @@ public:
     SpeedX=0;
     SpeedY=0;
     MaxSpeed=MaxSpeedInput;
+
+    Health=100;
   }
 
 };
@@ -172,27 +174,20 @@ class Enemy:public Soul
 {
 private:
   mutable sf::Vector2f XYSpeed;
-  sf::Vector2f point;
-  int XSideToMove,YSideToMove;
-  bool mov=true;
-  //II
-  void checkSideX(const std::vector<std::string> &map)
-  {
-    //mov=false;
-    for (int k=1;k<=3;k++)
-    {
-      if (map[(Body.getPosition().y/16)+XSideToMove][(Body.getPosition().x/16)-k]==' ')
-      {
-          point={trunc((Body.getPosition().x/16)-k),trunc((Body.getPosition().y/16)+XSideToMove)};
-          XYSpeed.x=-0.3F;break;}
-      else if (map[(Body.getPosition().y/16)+XSideToMove][(Body.getPosition().x/16)+k]==' ')
-      {
-          point={(Body.getPosition().x/16)+k,(Body.getPosition().y/16)+XSideToMove};
-          XYSpeed.x=0.3F;break;}
-    }
-  }
+  std::vector<sf::Vector2f> pointPath;
 
-  void checkSideY(const std::vector<std::string> &map);
+  bool moving=true;
+  int s;
+  //II
+  void findPath(const std::vector<std::string> &map,sf::Vector2f pointToWalk)
+  {
+    sf::Vector2f ObjCords={trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16)};
+    std::vector<sf::Vector2f> pathLeft;
+    float x=(pointToWalk.x-Body.getPosition().x),y=(pointToWalk.y-Body.getPosition().y);
+    pointToWalk={trunc(pointToWalk.x/16),trunc(pointToWalk.y/16)};
+
+    cout<<y/x<<' '<<x/y<<endl;
+  }
 public:
   void move(const float &time)
   {
@@ -203,24 +198,24 @@ public:
 
   void treatmentII(const sf::Vector2f PointCords,const std::vector<std::string> &map)
   {
-    if (PointCords.y<Body.getPosition().y){XYSpeed.y=-0.3F;}
-    else {XYSpeed.y=0.3F;}
+    //cout<<4<<endl;
+    /*if (moving){findPath(map,{trunc(PointCords.x/16), trunc(PointCords.y/16)});s=0;}
 
-    if (mov)
-    {
-      if (PointCords.x<Body.getPosition().x){XYSpeed.x=-0.3F;}
-      else {XYSpeed.x=0.3F;}
+    if (sf::Vector2f(trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16))==pointPath[s]){
+      s++;
+
+      //cout<<1<<endl;
+      if (s>=pointPath.size()){moving=true;return;}
     }
 
+    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;}
+    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;}
 
-    if (!UnlockSides[0]){XSideToMove=1;checkSideX(map);XYSpeed.y=0;}
-    if (!UnlockSides[1]){XSideToMove=-1;checkSideX(map);XYSpeed.y=0;}
+    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;}
+    else if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=-0.3F;}
+    */
 
-    //cout<<point.x<<' '<<point.y<<"  "<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl;
-
-    if (point==sf::Vector2f(trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16))&&mov==false){mov=true;cout<<1<<endl;}
-
-    resetBlockSides();
+    findPath(map,PointCords);
   }
 
 
