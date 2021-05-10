@@ -9,4 +9,4 @@ c++ main.cpp -lsfml-graphics -lsfml-window -lsfml-system -o Game
                             
                             
 Команда для компиляции редактора карт:                                      
-C++ MapCreator.cpp -lsfml-graphics -lsfml-window -lsfml-system -o Editor
+c++ MapCreator.cpp -lsfml-graphics -lsfml-window -lsfml-system -o Editor
