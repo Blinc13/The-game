@@ -118,7 +118,7 @@ public:
   }
 
                             //For future//
-  void fire(sf::Vector2f speed,Objects &obj)
+  void fire(sf::Vector2f speed,Objects<Bullet> &obj)
   {
     if (Amunition<=0){return;}
     obj.append(Bullet("Sprites/Ui/Center.png",{300,300,4,4},getCords(),{speed.x,speed.y}));
@@ -183,12 +183,33 @@ private:
   {
     sf::Vector2f ObjCords={trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16)};
     std::vector<sf::Vector2f> pathLeft;
-    float x=(pointToWalk.x-Body.getPosition().x),y=(pointToWalk.y-Body.getPosition().y);
     pointToWalk={trunc(pointToWalk.x/16),trunc(pointToWalk.y/16)};
+    int x=(pointToWalk.x-ObjCords.x),y=(pointToWalk.y-ObjCords.y),saveX=x;
+    float j=0,h=(float)y/x;
+    bool b=false,n=false;
+    moving=false;
 
-    cout<<y/x<<' '<<x/y<<endl;
+
+    if (x<0){b=true;x=-x;}
+    if (y<0){n=true;y=-y;}
+    //cout<<ObjCords.x<<' '<<ObjCords.y<<endl;
+
+    int k=0;
+    do
+    {
+      j+=h;
+
+      if (j>1){y+=1;j-=1;}
+      pathLeft.push_back({ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)});
+
+      //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
+      k++;
+    }while(k<x);
+    pointPath=pathLeft;
   }
 public:
+  bool Remove;
+
   void move(const float &time)
   {
     Body.move(XYSpeed.x*time,XYSpeed.y*time);
@@ -196,26 +217,32 @@ public:
     XYSpeed={0.0F,0.0F};
   }
 
-  void treatmentII(const sf::Vector2f PointCords,const std::vector<std::string> &map)
+  void Update(const sf::Vector2f PointCords,const std::vector<std::string> &map,const float time)
   {
     //cout<<4<<endl;
-    /*if (moving){findPath(map,{trunc(PointCords.x/16), trunc(PointCords.y/16)});s=0;}
+    if (moving){findPath(map,PointCords);s=0;}
+
+    //cout<<trunc(Body.getPosition().x/16)<<trunc(Body.getPosition().y/16)<<endl;
 
     if (sf::Vector2f(trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16))==pointPath[s]){
       s++;
 
       //cout<<1<<endl;
-      if (s>=pointPath.size()){moving=true;return;}
+      if (s==pointPath.size()){moving=true;return;}
     }
+
+    //cout<<6<<endl;
 
     if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;}
     else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;}
 
     if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;}
-    else if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=-0.3F;}
-    */
+    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;}
 
-    findPath(map,PointCords);
+    //cout<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl<<endl;
+    //cout<<pointPath[s].x<<' '<<pointPath[s].y<<endl;
+    //cout<<5<<endl;
+    move(time);
   }
 
 
@@ -227,7 +254,7 @@ public:
 
 
 
-  Enemy(const std::string FileDirectory,const imageArea Area,const sf::Vector2f Position):Soul(FileDirectory,Area)
+  Enemy(const std::string FileDirectory,const imageArea Area,const sf::Vector2f Position):Soul(FileDirectory,Area),Remove(false)
   {
     Body.setPosition(Position);
     Body.setOrigin({Area.Width/2,Area.Heigth/1.5});

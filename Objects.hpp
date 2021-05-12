@@ -15,7 +15,7 @@ public:
   float damage;
 
 
-  void update()
+  void Update(const sf::Vector2f cords,const std::vector<std::string> &map,const float time)
   {BulletSprite.move(Speed);}
 
   void blockSide(int x,bool k)

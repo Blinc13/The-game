@@ -5,34 +5,60 @@ using namespace std;
 template<class H>
 void Colision(H &Obj,std::vector<std::string> &Map,const float time);
 
+template<class X>
 class Objects
 {
 private:
-  std::vector<Bullet*> objects;
-  std::vector<Bullet*>::iterator iter;
+  typename std::vector<X*> objects;
+  typename std::vector<X*>::iterator iter;
 
 public:
-  void Update(sf::RenderWindow &Window,std::vector<std::string> &map,float time)
+  void Update(sf::RenderWindow &Window,std::vector<std::string> &map,const sf::Vector2f point,const float time)
   {
     for (int k=0;k<objects.size()-1;k++)
     {
       if (objects[k]==NULL){continue;}
 
-      objects[k]->update();
-      Window.draw(objects[k]->draw());
       Colision(*objects[k],map,time);
+      Window.draw(objects[k]->draw());
+      objects[k]->Update(point,map,time);
 
       if (objects[k]->Remove){delete objects[k];objects[k]=NULL;}
     }
   }
 
-  void append(Bullet bullet)
+  template<class Y>
+  void Compire(Objects<Y> &CompireObjects)
+  {
+    for (int k=0;k<80;k++)
+    {
+      if (objects[k]==NULL){continue;}
+
+      for (int j=0;j<80;j++)
+      {
+        if (CompireObjects[j]==NULL){continue;}
+
+        if (trunc(objects[k]->getCords().x/16)==trunc(CompireObjects[j]->getCords().x/16) && trunc(objects[k]->getCords().y/16)==trunc(CompireObjects[j]->getCords().y/16))
+        {
+          objects[k]->Remove=true;
+          CompireObjects[j]->Remove=true;
+
+          continue;
+        }
+      }
+    }
+  }
+
+  void append(X object)
   {
     if (iter==objects.end()){iter=objects.begin();}
     delete *iter;
-    *iter=new Bullet(bullet);
+    *iter=new X(object);
     iter++;
   }
+
+
+  X* operator [](int k){return objects[k];}
 
 
   Objects():objects(80),iter(objects.begin())

@@ -60,7 +60,7 @@ inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Ve
 }
 
 ///////////////////////////Main control////////////////////////////////////////
-void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &window,Objects &Bullets,float time)
+void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &window,Objects<Bullet> &BulletsV,float time)
 {
   static float delay=0;
 
@@ -93,7 +93,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 
     delay=0.0F;
 
-    hero.fire({Speed.x,Speed.y},Bullets);
+    hero.fire({Speed.x,Speed.y},BulletsV);
   }
 
   delay+=time;

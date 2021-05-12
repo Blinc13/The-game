@@ -23,16 +23,19 @@ int main()
   loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMapTest);
   loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMapTest);
   sf::RenderWindow window(sf::VideoMode(600,300),"Test");
-  Objects Bullets;
+  Objects<Bullet> Bullets;
   Ui ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
   window.setFramerateLimit(60);
   imageArea area={0,0,16,29};
-  Hero hero("Sprites/Souls/Herous/character.png",area,sf::Vector2f(2*16,2*16),10);
-  Enemy person("Sprites/Ui/Center.png",{150,150,16,16},{17*16,4*16});
+  Hero hero("Sprites/Souls/Herous/character.png",area,{5*16,7*16},10);
+  Objects<Enemy> persons;
+  persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
   Cam View;
   sf::Clock Timer;
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
   float time;
+
+  for (int k=1;k<23;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
   for (int k=0;k<6;k++){cout<<SimbMapTest[k]<<endl;}
 
@@ -42,11 +45,12 @@ int main()
     Timer.restart();
     controlHero(hero,map.getFrontMap(),window,Bullets,time);
     map.drawMap(window);
-    Bullets.Update(window,map.getFrontMap(),time);
+    Bullets.Update(window,map.getFrontMap(),hero.getCords(),time);
     ui.drawUi(window,View,hero.getHealth(),hero.getAmmo()/10);
-    Colision(person,map.getFrontMap(),time);
-    person.treatmentII(hero.getCords(),map.getFrontMap());
-    person.move(time);
+
+    persons.Update(window,map.getFrontMap(),hero.getCords(),time);
+    persons.Compire(Bullets);
+
     //cout<<"2 "<<Timer.getElapsedTime().asMicroseconds()<<endl;
     //cout<<1<<endl;
     //cout<<2<<endl;
@@ -59,7 +63,6 @@ int main()
     window.setView(View.getCamForDrav());
     //cout<<4<<endl;
     window.draw(hero.Sprite());
-    window.draw(person.draw());
     window.display();
     window.clear();
   }
