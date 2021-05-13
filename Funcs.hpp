@@ -1,16 +1,32 @@
 #pragma once
 #include <fstream>
 
-void loadMapFromTextFile(std::string FileName,std::vector<std::string> &Vector)
+void loadMapFromTextFile(const std::string FileName,std::vector<std::string> &Vector,const std::string Simb)
 {
   std::ifstream MapFile;
   std::string Line;
 
   MapFile.open(FileName);
 
-  while (std::getline(MapFile,Line))
+  while (std::getline(MapFile,Line)&&MapFile.good())
   {
     Vector.push_back(Line);
+  }
+
+  if (Vector.empty())
+  {
+    Vector.resize(0);
+
+    for (int k=0;k<52;k++)
+    {
+      for (int j=0;j<73;j++)
+      {
+        Line+=Simb;
+      }
+
+      Vector.push_back(Line);
+      Line="";
+    }
   }
 }
 

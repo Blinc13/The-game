@@ -147,10 +147,6 @@ public:
     Cords.y=Cordinats.y;
   }
 
-  void ResetBlockOfMap(int x,int y)
-  {}
-
-
   sf::Vector2<int> &getCords()
   {return Cords;}
 
@@ -174,20 +170,21 @@ public:
 
 int main(int argv,char **argc)
 {
-    if (argv==0)
+    if (argv<1)
     {
-      cout<<"Usage:\n<FileName> <ProjectFolder>"
-      
+      cout<<"Usage:\n<FileName> <ProjectFolder>"<<endl;
+
       return 1;
     }
-    
-    string FileDirectory("Maps/"+string(argc[0]));
-    
-    std::vector<std::string> BackMap,FrontMap;
-    std::string Test="Hello";
 
-    loadMapFromTextFile(ProgectDirectory+"/FrontMap.map", FrontMap);
-    loadMapFromTextFile(ProgectDirectory+"/BackMap.map", BackMap);
+    string ProgectDirectory("Maps/"+string(argc[1]));
+
+    cout<<ProgectDirectory<<endl;
+
+    std::vector<std::string> BackMap,FrontMap;
+
+    loadMapFromTextFile(ProgectDirectory+"/FrontMap.map", FrontMap, " ");
+    loadMapFromTextFile(ProgectDirectory+"/BackMap.map", BackMap, "0");
 
     sf::RenderWindow window(sf::VideoMode(600,300),"MapEditor");
     window.setFramerateLimit(60);
@@ -195,12 +192,6 @@ int main(int argv,char **argc)
     Cam View;
     Map map("Sprites/Objects/Overworld.png",BackMap,FrontMap);
     sf::Time time;
-
-    cout<<char(1+48)<<endl;
-    cout<<char(1)<<endl;
-
-    Test[2]=char(2+48);
-
 
     while (true)
     {
