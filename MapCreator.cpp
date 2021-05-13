@@ -181,12 +181,13 @@ int main(int argv,char **argc)
       return 1;
     }
     
+    string FileDirectory("Maps/"+string(argc[0]));
     
     std::vector<std::string> BackMap,FrontMap;
     std::string Test="Hello";
 
-    loadMapFromTextFile("Maps/StandartMap/FrontMap.map", FrontMap);
-    loadMapFromTextFile("Maps/StandartMap/BackMap.map", BackMap);
+    loadMapFromTextFile(ProgectDirectory+"/FrontMap.map", FrontMap);
+    loadMapFromTextFile(ProgectDirectory+"/BackMap.map", BackMap);
 
     sf::RenderWindow window(sf::VideoMode(600,300),"MapEditor");
     window.setFramerateLimit(60);
