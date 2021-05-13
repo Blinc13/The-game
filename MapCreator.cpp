@@ -170,7 +170,7 @@ public:
 
 int main(int argv,char **argc)
 {
-    if (argv<1)
+    if (argv<=1)
     {
       cout<<"Usage:\n<FileName> <ProjectFolder>"<<endl;
 
