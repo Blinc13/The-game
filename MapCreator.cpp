@@ -172,8 +172,16 @@ public:
 
 
 
-int main()
+int main(int argv,char **argc)
 {
+    if (argv==0)
+    {
+      cout<<"Usage:\n<FileName> <ProjectFolder>"
+      
+      return 1;
+    }
+    
+    
     std::vector<std::string> BackMap,FrontMap;
     std::string Test="Hello";
 
