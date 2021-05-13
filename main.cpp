@@ -20,8 +20,8 @@ using namespace std;
 
 int main()
 {
-  loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMapTest);
-  loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMapTest);
+  loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMapTest," ");
+  loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMapTest,"0");
   sf::RenderWindow window(sf::VideoMode(600,300),"Test");
   Objects<Bullet> Bullets;
   Ui ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
