@@ -220,8 +220,8 @@ int main(int argv,char **argc)
       window.clear();
     }
 
-    saveMapFile("Maps/StandartMap/FrontMap.map",map.getFrontMap());
-    saveMapFile("Maps/StandartMap/BackMap.map",map.getBackMap());
+    saveMapFile(ProgectDirectory+"/FrontMap.map",map.getFrontMap());
+    saveMapFile(ProgectDirectory+"/BackMap.map",map.getBackMap());
 
     return 0;
 }
