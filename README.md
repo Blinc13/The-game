@@ -1,6 +1,9 @@
 # The-game
 Простите , тут лежат только некоторые файлы .                
 Эта игра ещё в разработке
+                          
+                          
+![alt text](https://github.com/Blinc13/The-game/Screenshot_20210414_215907.png)
                         
                         
 Требуется библиотека SFML                 
