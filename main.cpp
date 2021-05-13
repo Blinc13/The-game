@@ -37,7 +37,7 @@ int main()
 
   for (int k=1;k<60;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
-  for (int k=0;k<6;k++){cout<<SimbMapTest[k]<<endl;}
+  for (int k=0;k<81;k++){cout<<SimbMapTest[k]<<endl;}
 
   while (true){
     sf::Event event;
