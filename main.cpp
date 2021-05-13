@@ -35,7 +35,7 @@ int main()
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
   float time;
 
-  for (int k=1;k<60;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
+  for (int k=1;k<40;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
   for (int k=0;k<81;k++){cout<<SimbMapTest[k]<<endl;}
 
