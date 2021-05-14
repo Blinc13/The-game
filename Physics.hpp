@@ -58,7 +58,8 @@ public:
   }
 
 
-  X* operator [](int k){return objects[k];}
+  X* operator [](int k) const
+  {return objects[k];}
 
 
   Objects():objects(80),iter(objects.begin())
@@ -74,6 +75,8 @@ public:
     }
   }
 };
+
+
 
 template<class H>
 void Colision(H &Obj,std::vector<std::string> &Map,const float time)
@@ -95,4 +98,16 @@ void Colision(H &Obj,std::vector<std::string> &Map,const float time)
   if (Map[C.y-1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))<0.9991F/time){Obj.blockSide(0,false);}
   if (Map[C.y+1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))>0.9991F/time){Obj.blockSide(1,false);}
   if (Map[C.y][C.x+1]!=' '&&(CordsFloat.x-trunc(CordsFloat.x))>0.9991f/time){Obj.blockSide(3,false);}
+}
+
+template<class x,class y>
+void Damage(Objects<x> &Enemys,y& hero)
+{
+  const sf::Vector2f HeroPosition={trunc(hero.getCords().x/16),trunc(hero.getCords().y/16)};
+  for (int k=0;k<80;k++)
+  {
+    if (Enemys[k]==NULL){continue;}
+
+    if (trunc(Enemys[k]->getCords().x/16)==HeroPosition.x && trunc(Enemys[k]->getCords().y/16)==HeroPosition.y){hero.DamageSoul(0.1F);}
+  }
 }
