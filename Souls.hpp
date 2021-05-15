@@ -203,7 +203,6 @@ private:
       k++;
     }while(k<x);
 
-    cout<<Health<<endl;
     pointPath=pathLeft;
   }
 public:
