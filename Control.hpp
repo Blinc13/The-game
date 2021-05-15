@@ -17,11 +17,11 @@ using namespace std;
 
 const float MaxBulletSpeed=6;
 
-inline void math(sf::Vector2f &XY)
+inline void math(sf::Vector2f &XY,const float MAX)
 {
-  if (XY.x+XY.y==6){return;}
+  if (XY.x+XY.y==MAX){return;}
 
-  float x=(XY.x+XY.y)/6.0F;
+  float x=(XY.x+XY.y)/MAX;
 
   XY.x/=x;
   XY.y/=x;
@@ -51,7 +51,7 @@ inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Ve
   BulletSpeed.x=x/y;
   BulletSpeed.y=y/x;
 
-  math(BulletSpeed);
+  math(BulletSpeed,6);
 
   if (k){BulletSpeed.x*=-1;}
   if (i){BulletSpeed.y*=-1;}
@@ -96,6 +96,19 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
     hero.fire({Speed.x,Speed.y},BulletsV);
   }
 
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+  {
+    sf::Vector2u size=window.getSize();
+    sf::Vector2i cords=sf::Mouse::getPosition(window);
+    sf::Vector2f heroCords=hero.getCords();
+
+    cords={(cords.x-size.x/2)/16,(cords.y-size.y/2)/16};
+
+    cords.x+=int(heroCords.x/16);
+    cords.y+=int(heroCords.y/16);
+
+    map[cords.y][cords.x]=(-16+48);
+  }
   delay+=time;
 
   //cout<<"1.5 "<<clock.getElapsedTime().asMicroseconds()<<endl;
