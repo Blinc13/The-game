@@ -31,7 +31,7 @@ private:
      XY.y/=x;
   }
 
-  FinctionsToControl()
+  FunctionsToControl()
   {}
 
 public:
