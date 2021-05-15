@@ -35,8 +35,9 @@ class Soul
 private:
                         //Animation//
   float AnStage;
+
 protected:
-  float Health,DamageBost;
+  float Health,Damage;
   bool UnlockSides[4]={1,1,1,1};
 
 
@@ -70,10 +71,13 @@ public:
         UnlockSides[k]=true;
   }
 
+  void setHealth(float H)
+  {Health=H;}
+
   //Return soul death (false/true)
-  bool DamageSoul(float Damage)
+  bool DamageSoul(const float DamageF)
   {
-    Health-=Damage;
+    Health-=DamageF;
 
     if (Health<=0){return true;}
 
@@ -87,7 +91,7 @@ public:
   bool getBlockSide(int Position)
   {return UnlockSides[Position];}
 
-  Soul(std::string FileDirectory,const imageArea &Area):TextureArea(Area),AnStage(0)
+  Soul(std::string FileDirectory,const imageArea &Area,float D,float H):TextureArea(Area),AnStage(0),Damage(D),Health(H)
   {
     BodyTexture.loadFromFile(FileDirectory);
 
@@ -127,7 +131,7 @@ public:
   }
 
   void setPosition(const int x,const int y)
-  {Body.setPosition(x,y);}
+  {Body.setPosition(x*16,y*16);}
 
   void setAmmo(int x)
   {Amunition=x;}
@@ -139,31 +143,24 @@ public:
   {Amunition-=x;}
                     //Get//
   sf::Vector2f getCords() const
-  {
-    return Body.getPosition();
-  }
+  {return Body.getPosition();}
 
   int getAmmo()           const
-  {
-    return Amunition;
-  }
+  {return Amunition;}
 
   sf::Sprite Sprite()     const
   {return Body;}
 
 
   Hero(std::string FileDirectory,imageArea Area,sf::Vector2f Cords,float MaxSpeedInput):
-  Soul(FileDirectory,Area),Amunition(1)
+  Soul(FileDirectory,Area,25,100),Amunition(100)
   {
     Body.setPosition(Cords.x,Cords.y);
     Body.setOrigin(Area.Width/2,(Area.Heigth/4)*3);
     SpeedX=0;
     SpeedY=0;
     MaxSpeed=MaxSpeedInput;
-
-    Health=100;
   }
-
 };
 
 
@@ -175,9 +172,9 @@ class Enemy:public Soul
 private:
   mutable sf::Vector2f XYSpeed;
   std::vector<sf::Vector2f> pointPath;
+  int s;
 
   bool moving=true;
-  int s;
   //II
   void findPath(const std::vector<std::string> &map,sf::Vector2f pointToWalk)
   {
@@ -205,6 +202,7 @@ private:
       //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
       k++;
     }while(k<x);
+
     pointPath=pathLeft;
   }
 public:
@@ -254,7 +252,8 @@ public:
 
 
 
-  Enemy(const std::string FileDirectory,const imageArea Area,const sf::Vector2f Position):Soul(FileDirectory,Area),Remove(false)
+  Enemy(const std::string FileDirectory,const imageArea Area,const sf::Vector2f Position):
+  Soul(FileDirectory,Area,13,115),Remove(false)
   {
     Body.setPosition(Position);
     Body.setOrigin({Area.Width/2,Area.Heigth/1.5});

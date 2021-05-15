@@ -50,7 +50,14 @@ int main()
 
     persons.Update(window,map.getFrontMap(),hero.getCords(),time);
     persons.Compire(Bullets);
+    Damage(persons,hero);
 
+    if (hero.getHealth()<=0)
+    {
+      hero.setPosition(5,30);
+
+      hero.setHealth(100.0F);
+    }
     //cout<<"2 "<<Timer.getElapsedTime().asMicroseconds()<<endl;
     //cout<<1<<endl;
     //cout<<2<<endl;

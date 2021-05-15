@@ -12,7 +12,7 @@ private:
   Sprite BulletSprite;
 public:
   bool Remove;
-  float damage;
+  float Damage;
 
 
   void Update(const sf::Vector2f cords,const std::vector<std::string> &map,const float time)
