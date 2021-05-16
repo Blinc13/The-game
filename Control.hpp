@@ -70,17 +70,19 @@ public:
 
   static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,sf::Vector2u SizeOfWindow,const sf::Vector2i point)
   {
+     //cout<<Cords.x<<' '<<Cords.y<<endl;
+
+     //int j;
+     Cords.x/=31;
+     Cords.y/=31;
+
+     //cout<<SizeOfWindow.x/2<<' '<<SizeOfWindow.y/2<<endl;
      cout<<Cords.x<<' '<<Cords.y<<endl;
 
-     Cords.x=(Cords.x+SizeOfWindow.x/2)/16;
-     Cords.y=(Cords.y+SizeOfWindow.y/2)/16;
+     Cords.x+=point.x/16-(SizeOfWindow.x/2)/31;
+     Cords.y+=point.y/16-(SizeOfWindow.y/2)/31;
 
-     cout<<Cords.x<<' '<<Cords.y<<endl;
-
-     Cords.x+=point.x/16;
-     Cords.y+=point.y/16;
-
-     cout<<Cords.x<<' '<<Cords.y<<endl;
+     //cout<<Cords.x<<' '<<Cords.y<<endl;
 
      return Cords;
   }
