@@ -15,59 +15,87 @@
 #pragma once
 using namespace std;
 
-const float MaxBulletSpeed=6;
+const float MaxBulletSpeed       =6;
+const int   MaxBlockDistance     =9;
 
-inline void math(sf::Vector2f &XY,const float MAX)
+class FunctionsToControl
 {
-  if (XY.x+XY.y==MAX){return;}
+private:
+  static inline void math(sf::Vector2f &XY,const float MAX)
+  {
+    if (XY.x+XY.y==MAX){return;}
 
-  float x=(XY.x+XY.y)/MAX;
+     float x=(XY.x+XY.y)/MAX;
 
-  XY.x/=x;
-  XY.y/=x;
-}
+     XY.x/=x;
+     XY.y/=x;
+  }
 
-static inline int getMoveButton()
-{
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){return 0;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){return 1;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){return 2;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){return 3;}
-  return 4;
-}
+  FunctionsToControl()
+  {}
 
-inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Vector2u windowSize)
-{
-  bool k=false,i=false;
-  //cout<<MouseCords.x<<' '<<MouseCords.y<<endl;
-  //cout<<windowSize.x<<' '<<windowSize.y<<endl;
-  sf::Vector2f BulletSpeed{float(MouseCords.x-int(windowSize.x)/2),float(MouseCords.y-int(windowSize.y)/2)};
-  //cout<<BulletSpeed.x<<' '<<BulletSpeed.y<<endl;
-  float x=BulletSpeed.x,y=BulletSpeed.y;
+public:
+  static inline int getMoveButton()
+  {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){return 0;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){return 1;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){return 2;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){return 3;}
 
-  if (x<0){x*=-1;k=true;}
-  if (y<0){y*=-1;i=true;}
 
-  BulletSpeed.x=x/y;
-  BulletSpeed.y=y/x;
+    return 4;
+  }
 
-  math(BulletSpeed,6);
+  static inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Vector2u windowSize)
+  {
+     bool k=false,i=false;
 
-  if (k){BulletSpeed.x*=-1;}
-  if (i){BulletSpeed.y*=-1;}
+     sf::Vector2f BulletSpeed{float(MouseCords.x-int(windowSize.x)/2),float(MouseCords.y-int(windowSize.y)/2)};
 
-  return BulletSpeed;
-}
+     float x=BulletSpeed.x,y=BulletSpeed.y;
+
+     if (x<0){x*=-1;k=true;}
+     if (y<0){y*=-1;i=true;}
+
+     BulletSpeed.x=x/y;
+     BulletSpeed.y=y/x;
+
+     math(BulletSpeed,6);
+
+     if (k){BulletSpeed.x*=-1;}
+     if (i){BulletSpeed.y*=-1;}
+
+     return BulletSpeed;
+  }
+
+  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,sf::Vector2u SizeOfWindow,const sf::Vector2i point)
+  {
+     cout<<Cords.x<<' '<<Cords.y<<endl;
+
+     Cords.x=(Cords.x+SizeOfWindow.x/2)/16;
+     Cords.y=(Cords.y+SizeOfWindow.y/2)/16;
+
+     cout<<Cords.x<<' '<<Cords.y<<endl;
+
+     Cords.x+=point.x/16;
+     Cords.y+=point.y/16;
+
+     cout<<Cords.x<<' '<<Cords.y<<endl;
+
+     return Cords;
+  }
+};
 
 ///////////////////////////Main control////////////////////////////////////////
+typedef FunctionsToControl func;
 void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &window,Objects<Bullet> &BulletsV,float time)
 {
   static float delay=0;
 
   //cout<<"1 "<<clock.getElapsedTime().asMicroseconds()<<endl;
   Colision(hero,map,time);
-  //cout<<1<<endl;
-  switch (getMoveButton())
+
+  switch (func::getMoveButton())
   {
     case 0:
       if (hero.getBlockSide(0)){hero.move(0,-1.0F*time,2,time);}
@@ -82,15 +110,15 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
       if (hero.getBlockSide(3)){hero.move(1.0F*time,0,1,time);}
       break;
   }
-  //cout<<1<<endl;
   hero.resetBlockSides();
+
+
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){hero.appendAmmo(1);}
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&delay>20.0F)
   {
-    sf::Vector2f Speed=getSpeedForBullet(sf::Mouse::getPosition(window),window.getSize());
-
+    sf::Vector2f Speed=func::getSpeedForBullet(sf::Mouse::getPosition(window),window.getSize());
     delay=0.0F;
 
     hero.fire({Speed.x,Speed.y},BulletsV);
@@ -98,18 +126,11 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
   {
-    sf::Vector2u size=window.getSize();
-    sf::Vector2i cords=sf::Mouse::getPosition(window);
     sf::Vector2f heroCords=hero.getCords();
 
-    cords={(cords.x-size.x/2)/16,(cords.y-size.y/2)/16};
-
-    cords.x+=int(heroCords.x/16);
-    cords.y+=int(heroCords.y/16);
-
-    map[cords.y][cords.x]=(-16+48);
+    sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)});
+    map[cords.y][cords.x]=(2+48);
   }
   delay+=time;
-
   //cout<<"1.5 "<<clock.getElapsedTime().asMicroseconds()<<endl;
 }
