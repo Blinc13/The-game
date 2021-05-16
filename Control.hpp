@@ -15,8 +15,10 @@
 #pragma once
 using namespace std;
 
-const float MaxBulletSpeed       =6;
-const int   MaxBlockDistance     =9;
+static const int   NumInGame           =16;
+static const int   NumInWindow         =31;
+static const float MaxBulletSpeed       =6;
+static const int   MaxBlockDistance     =9;
 
 class FunctionsToControl
 {
@@ -49,7 +51,6 @@ public:
   static inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Vector2u windowSize)
   {
      bool k=false,i=false;
-
      sf::Vector2f BulletSpeed{float(MouseCords.x-int(windowSize.x)/2),float(MouseCords.y-int(windowSize.y)/2)};
 
      float x=BulletSpeed.x,y=BulletSpeed.y;
@@ -65,28 +66,25 @@ public:
      if (k){BulletSpeed.x*=-1;}
      if (i){BulletSpeed.y*=-1;}
 
+
      return BulletSpeed;
   }
 
-  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,sf::Vector2u SizeOfWindow,const sf::Vector2i point)
+  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,sf::Vector2u SizeOfWindow,const sf::Vector2i Point)
   {
-     //cout<<Cords.x<<' '<<Cords.y<<endl;
+     Cords.x/=NumInWindow;
+     Cords.y/=NumInWindow;
 
-     //int j;
-     Cords.x/=31;
-     Cords.y/=31;
+     Cords.x+=Point.x/NumInGame-(SizeOfWindow.x/2)/NumInWindow;
+     Cords.y+=Point.y/NumInGame-(SizeOfWindow.y/2)/NumInWindow;
 
-     //cout<<SizeOfWindow.x/2<<' '<<SizeOfWindow.y/2<<endl;
-     cout<<Cords.x<<' '<<Cords.y<<endl;
-
-     Cords.x+=point.x/16-(SizeOfWindow.x/2)/31;
-     Cords.y+=point.y/16-(SizeOfWindow.y/2)/31;
-
-     //cout<<Cords.x<<' '<<Cords.y<<endl;
 
      return Cords;
   }
 };
+
+
+
 
 ///////////////////////////Main control////////////////////////////////////////
 typedef FunctionsToControl func;
@@ -94,7 +92,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 {
   static float delay=0;
 
-  //cout<<"1 "<<clock.getElapsedTime().asMicroseconds()<<endl;
+
   Colision(hero,map,time);
 
   switch (func::getMoveButton())
