@@ -108,9 +108,8 @@ public:
 class Hero: /*The endow with soul*/public Soul
 {
 protected:
-  //Speed Data
   float SpeedX,SpeedY,MaxSpeed;
-  int Amunition;
+  int Amunition,Resources=100;
 
 public:
                             //Set//
@@ -130,25 +129,34 @@ public:
     subtractAmmo(1);
   }
 
-  void setPosition(const int x,const int y)
+  inline void setPosition(const int x,const int y)
   {Body.setPosition(x*16,y*16);}
 
-  void setAmmo(int x)
+  inline void setAmmo(const int x)
   {Amunition=x;}
 
-  void appendAmmo(int x)
+  inline void appendAmmo(const int x)
   {Amunition+=x;}
 
-  void subtractAmmo(int x)
+  inline void subtractAmmo(const int x)
   {Amunition-=x;}
+
+  inline void appendRes(const int k)
+  {Resources+=k;}
+
+  inline void subtractRes(const int k)
+  {Resources-=k;}
                     //Get//
-  sf::Vector2f getCords() const
+  inline sf::Vector2f getCords() const
   {return Body.getPosition();}
 
-  int getAmmo()           const
+  inline int getAmmo()           const
   {return Amunition;}
 
-  sf::Sprite Sprite()     const
+  inline int getRes()            const
+  {return Resources;}
+
+  inline sf::Sprite Sprite()     const
   {return Body;}
 
 

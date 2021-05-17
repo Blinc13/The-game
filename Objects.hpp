@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <math.h>
 using namespace std;
 using namespace sf;
 
@@ -16,10 +17,14 @@ public:
 
 
   void Update(const sf::Vector2f cords,const std::vector<std::string> &map,const float time)
-  {BulletSprite.move(Speed);}
+  {
+    BulletSprite.move(Speed);
 
-  void blockSide(int x,bool k)
-  {Remove=!k;}
+    if (map[(int)BulletSprite.getPosition().y/16][(int)BulletSprite.getPosition().x/16]!=' '){Remove=true;}
+  }
+
+  inline void blockSide(int x,bool k)
+  {/*Remove=!k;*/}
 
   void setPosition(sf::Vector2f &cords)
   {BulletSprite.setPosition(cords);}
@@ -39,6 +44,7 @@ public:
 
     BulletSprite.setTextureRect(IntRect(TextureCords.x,TextureCords.y,TextureCords.Width,TextureCords.Heigth));
     BulletSprite.setPosition(Cords);
+    BulletSprite.setOrigin(TextureCords.Width/2,TextureCords.Heigth/2);
 
     Speed=speed;
   }

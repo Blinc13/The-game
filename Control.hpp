@@ -15,59 +15,104 @@
 #pragma once
 using namespace std;
 
-const float MaxBulletSpeed=6;
+static const int   NumInGame                    =16   ;
+static const int   NumInWindow                  =20   ;
+static const int   MaxBlockDistance             =2    ;
+static const float MaxBulletSpeed               =6.0F ;
+static const float DelayBetweenShots            =25.0F;
+static const float DelayInBlockInstallation     =30.0F;
 
-inline void math(sf::Vector2f &XY)
+
+class FunctionsToControl
 {
-  if (XY.x+XY.y==6){return;}
+private:
+  static inline void math(sf::Vector2f &XY,const float MAX)
+  {
+    if (XY.x+XY.y==MAX){return;}
 
-  float x=(XY.x+XY.y)/6.0F;
+    float x=(XY.x+XY.y)/MAX;
 
-  XY.x/=x;
-  XY.y/=x;
-}
+    XY.x/=x;
+    XY.y/=x;
+  }
 
-static inline int getMoveButton()
-{
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){return 0;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){return 1;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){return 2;}
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){return 3;}
-  return 4;
-}
+  static inline int substract(int x,const int y,const int r)
+  {
+    int h,k=(h=(x-y))-( (h>0)?r:-r );
 
-inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Vector2u windowSize)
-{
-  bool k=false,i=false;
-  //cout<<MouseCords.x<<' '<<MouseCords.y<<endl;
-  //cout<<windowSize.x<<' '<<windowSize.y<<endl;
-  sf::Vector2f BulletSpeed{float(MouseCords.x-int(windowSize.x)/2),float(MouseCords.y-int(windowSize.y)/2)};
-  //cout<<BulletSpeed.x<<' '<<BulletSpeed.y<<endl;
-  float x=BulletSpeed.x,y=BulletSpeed.y;
+    return x-k;
+  }
 
-  if (x<0){x*=-1;k=true;}
-  if (y<0){y*=-1;i=true;}
+  FunctionsToControl()
+  {}
 
-  BulletSpeed.x=x/y;
-  BulletSpeed.y=y/x;
+public:
+  static inline int getMoveButton()
+  {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){return 0;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){return 1;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){return 2;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){return 3;}
 
-  math(BulletSpeed);
 
-  if (k){BulletSpeed.x*=-1;}
-  if (i){BulletSpeed.y*=-1;}
+    return 4;
+  }
 
-  return BulletSpeed;
-}
+  static inline sf::Vector2f getSpeedForBullet(const sf::Vector2i MouseCords,const sf::Vector2u windowSize)
+  {
+    bool k=false,i=false;
+
+    sf::Vector2f BulletSpeed{float(MouseCords.x-int(windowSize.x)/2),float(MouseCords.y-int(windowSize.y)/2)};
+
+    float x=BulletSpeed.x,y=BulletSpeed.y;
+
+    if (x<0){x*=-1;k=true;}
+    if (y<0){y*=-1;i=true;}
+
+    BulletSpeed.x=x/y;
+    BulletSpeed.y=y/x;
+
+    math(BulletSpeed,6);
+
+    if (k){BulletSpeed.x*=-1;}
+    if (i){BulletSpeed.y*=-1;}
+
+    return BulletSpeed;
+  }
+
+  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,const sf::Vector2u SizeOfWindow,sf::Vector2i point)
+  {
+    static bool k,j;
+
+    Cords.x/=NumInWindow;
+    Cords.y/=NumInWindow;
+
+    Cords.x+=(point.x/=NumInGame)-(SizeOfWindow.x/2)/NumInWindow;
+    Cords.y+=(point.y/=NumInGame)-(SizeOfWindow.y/2)/NumInWindow;
+
+    if ((Cords.x-point.x > MaxBlockDistance) || (Cords.x-point.x < -MaxBlockDistance))
+    {Cords.x=substract(Cords.x,point.x,MaxBlockDistance);}
+
+    if ((Cords.y-point.y > MaxBlockDistance) || (Cords.y-point.y < -MaxBlockDistance))
+    {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
+
+    //cout<<Cords.y-point.y<<endl;
+
+    return Cords;
+  }
+};
 
 ///////////////////////////Main control////////////////////////////////////////
+typedef FunctionsToControl func;
 void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &window,Objects<Bullet> &BulletsV,float time)
 {
-  static float delay=0;
+  static float FireDelay=0,BlockDelay=0;
 
-  //cout<<"1 "<<clock.getElapsedTime().asMicroseconds()<<endl;
+  sf::Vector2i MousePosition=sf::Mouse::getPosition(window);
+
   Colision(hero,map,time);
-  //cout<<1<<endl;
-  switch (getMoveButton())
+
+  switch (func::getMoveButton())
   {
     case 0:
       if (hero.getBlockSide(0)){hero.move(0,-1.0F*time,2,time);}
@@ -82,21 +127,33 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
       if (hero.getBlockSide(3)){hero.move(1.0F*time,0,1,time);}
       break;
   }
-  //cout<<1<<endl;
   hero.resetBlockSides();
+
+
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){hero.appendAmmo(1);}
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&delay>20.0F)
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&FireDelay>DelayBetweenShots)
   {
-    sf::Vector2f Speed=getSpeedForBullet(sf::Mouse::getPosition(window),window.getSize());
-
-    delay=0.0F;
+    sf::Vector2f Speed=func::getSpeedForBullet(sf::Mouse::getPosition(window),window.getSize());
+    FireDelay=0.0F;
 
     hero.fire({Speed.x,Speed.y},BulletsV);
   }
 
-  delay+=time;
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && BlockDelay>DelayInBlockInstallation &&
+     (MousePosition.x<=window.getSize().x && MousePosition.y<=window.getSize().y))
+  {
+    if (hero.getRes()>0){
+      sf::Vector2f heroCords=hero.getCords();
+      sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)});
 
-  //cout<<"1.5 "<<clock.getElapsedTime().asMicroseconds()<<endl;
+
+      if (map[cords.y][cords.x]==' '){map[cords.y][cords.x]=(2+48);hero.subtractRes(1);BlockDelay=0.0F;}
+    }
+  }
+
+
+  FireDelay+=time;
+  BlockDelay+=time;
 }
