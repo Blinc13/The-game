@@ -96,7 +96,7 @@ public:
     if ((Cords.y-point.y > MaxBlockDistance) || (Cords.y-point.y < -MaxBlockDistance))
     {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
 
-    cout<<Cords.y-point.y<<endl;
+    //cout<<Cords.y-point.y<<endl;
 
     return Cords;
   }
