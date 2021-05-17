@@ -15,10 +15,12 @@
 #pragma once
 using namespace std;
 
-static const int   NumInGame           =16;
-static const int   NumInWindow         =20;
-static const float MaxBulletSpeed       =6;
-static const int   MaxBlockDistance     =2;
+static const int   NumInGame                    =16   ;
+static const int   NumInWindow                  =20   ;
+static const int   MaxBlockDistance             =2    ;
+static const float MaxBulletSpeed               =6.0F ;
+static const float DelayBetweenShots            =25.0F;
+static const float DelayInBlockInstallation     =30.0F;
 
 
 class FunctionsToControl
@@ -37,8 +39,6 @@ private:
   static inline int substract(int x,const int y,const int r)
   {
     int h,k=(h=(x-y))-( (h>0)?r:-r );
-
-    //cout<<k<<' '<<h<<endl;
 
     return x-k;
   }
@@ -106,9 +106,10 @@ public:
 typedef FunctionsToControl func;
 void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &window,Objects<Bullet> &BulletsV,float time)
 {
-  static float delay=0;
+  static float FireDelay=0,BlockDelay=0;
 
-  //cout<<"1 "<<clock.getElapsedTime().asMicroseconds()<<endl;
+  sf::Vector2i MousePosition=sf::Mouse::getPosition(window);
+
   Colision(hero,map,time);
 
   switch (func::getMoveButton())
@@ -132,26 +133,27 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){hero.appendAmmo(1);}
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&delay>20.0F)
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&FireDelay>DelayBetweenShots)
   {
     sf::Vector2f Speed=func::getSpeedForBullet(sf::Mouse::getPosition(window),window.getSize());
-    delay=0.0F;
+    FireDelay=0.0F;
 
     hero.fire({Speed.x,Speed.y},BulletsV);
   }
 
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && BlockDelay>DelayInBlockInstallation &&
+     (MousePosition.x<=window.getSize().x && MousePosition.y<=window.getSize().y))
   {
     if (hero.getRes()>0){
       sf::Vector2f heroCords=hero.getCords();
       sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)});
 
 
-      if (map[cords.y][cords.x]==' '){map[cords.y][cords.x]=(2+48);hero.subtractRes(1);}
+      if (map[cords.y][cords.x]==' '){map[cords.y][cords.x]=(2+48);hero.subtractRes(1);BlockDelay=0.0F;}
     }
   }
 
 
-  delay+=time;
-  //cout<<"1.5 "<<clock.getElapsedTime().asMicroseconds()<<endl;
+  FireDelay+=time;
+  BlockDelay+=time;
 }
