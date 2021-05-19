@@ -17,12 +17,12 @@ using namespace std;
 class KeyBoard
 {
 private:
-  bool EnterIsPressed=false;
+  bool EnterIsPressed=false,Supplement=false;
   string BlockNumber;
   int BlockInputNum=0,BlockInputEnter=0;
 
 public:
-  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){BlockNumber+=Number;BlockInputNum=16;return;}
+  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){BlockNumber+=Number;BlockInputNum=16;if(Supplement){ResetBlockNumber();Supplement=false;cout<<1<<endl;};return;}
   void UpdateBlockNumber()
   {
     if (BlockInputNum<=0){
@@ -37,11 +37,13 @@ public:
         KeyFind('8',Num8)
         KeyFind('9',Num9)
 
-        if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;}
+
+        cout<<GetBlockNumber()<<endl;
+        if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;Supplement=false;}
     }
 
     BlockInputNum--;
-    if (Key::isKeyPressed(Key::Return)&&BlockInputEnter<=0){EnterIsPressed=true;BlockInputEnter=30;}
+    if (Key::isKeyPressed(Key::Return)&&BlockInputEnter<=0){EnterIsPressed=true;Supplement=true;BlockInputEnter=30;}
 
     BlockInputEnter--;
   }
@@ -66,16 +68,16 @@ public:
 
   ////////////////////////////////////////////////////////////////
 
-  bool CheckEnter()
+  bool CheckEnter() const
   {return EnterIsPressed;}
 
-  int GetBlockNumber()
-  {
-    //cout<<BlockNumber<<endl;
-    return atoi(BlockNumber.c_str());
-  }
+  bool SupplementInput() const
+  {return Supplement;}
 
-  bool CheckSide()
+  int GetBlockNumber() const
+  {return atoi(BlockNumber.c_str());}
+
+  bool CheckSide() const
   {return Key::isKeyPressed(Key::F);}
 
   ////////////////////////////////////////////////////////////////
@@ -122,12 +124,16 @@ public:
     }
 
     if (KeyboardInteraction.CheckEnter()==true){
-            if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
-            else {map.setBlockOnBackMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+      int x=KeyboardInteraction.GetBlockNumber();
+
+      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+      else {map.setBlockOnBackMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+
+      //cout<<KeyboardInteraction.GetBlockNumber()<<endl;
 
 
-            KeyboardInteraction.ResetEnter();
-            KeyboardInteraction.ResetBlockNumber();
+      if (!KeyboardInteraction.SupplementInput()){KeyboardInteraction.ResetBlockNumber();cout<<1<<endl;}
+      KeyboardInteraction.ResetEnter();
     }
 
     SpeedMoving--;
