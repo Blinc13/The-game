@@ -22,7 +22,7 @@ private:
   int BlockInputNum=0,BlockInputEnter=0;
 
 public:
-  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){BlockNumber+=Number;BlockInputNum=16;if(Supplement){ResetBlockNumber();Supplement=false;cout<<1<<endl;};return;}
+  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){if(Supplement){ResetBlockNumber();Supplement=false;}BlockNumber+=Number;BlockInputNum=16;return;}
   void UpdateBlockNumber()
   {
     if (BlockInputNum<=0){
@@ -38,7 +38,6 @@ public:
         KeyFind('9',Num9)
 
 
-        cout<<GetBlockNumber()<<endl;
         if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;Supplement=false;}
     }
 
