@@ -41,9 +41,10 @@ public:
         if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;Supplement=false;}
     }
 
-    BlockInputNum--;
-    if (Key::isKeyPressed(Key::Return)&&BlockInputEnter<=0){EnterIsPressed=true;Supplement=true;BlockInputEnter=30;}
+    if ((Key::isKeyPressed(Key::Return))&&BlockInputEnter<=0){EnterIsPressed=true;Supplement=true;BlockInputEnter=30;}
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){Supplement=true;}
 
+    BlockInputNum--;
     BlockInputEnter--;
   }
 
@@ -133,12 +134,16 @@ public:
       KeyboardInteraction.ResetEnter();
     }
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (sf::Mouse::getPosition(Window).x<=Window.getSize().x && sf::Mouse::getPosition(Window).y<=Window.getSize().y))
     {
       sf::Vector2i BlockPos=FunctionsToControl::getPointOnMapForMouse(sf::Mouse::getPosition(Window),Window.getSize(),{int(Cords.x),int(Cords.y)});
 
-      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(BlockPos.x,BlockPos.y,KeyboardInteraction.GetBlockNumber());}
+      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
       else {map.setBlockOnBackMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
+
+      //cout<<KeyboardInteraction.GetBlockNumber()<<endl;
+
+      if (!KeyboardInteraction.SupplementInput()){KeyboardInteraction.ResetBlockNumber();cout<<1<<endl;}
     }
 
     SpeedMoving--;
