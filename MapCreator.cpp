@@ -4,11 +4,11 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <thread>
-#include <chrono>
+
 #include "Funcs.hpp"
 #include "View.hpp"
 #include "Map.hpp"
+#include "ControlFunctions.hpp"
 using namespace std;
 
 
@@ -98,7 +98,7 @@ private:
   sf::Sprite CenterSprite       ;
 
 public:
-  void Update(Map &map)
+  void Update(Map &map,sf::RenderWindow &Window)
   {
     KeyboardInteraction.UpdateBlockNumber();
 
@@ -122,9 +122,7 @@ public:
       SpeedMoving=3;
     }
 
-    if (KeyboardInteraction.CheckEnter()==true){
-      int x=KeyboardInteraction.GetBlockNumber();
-
+    if (KeyboardInteraction.CheckEnter()){
       if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
       else {map.setBlockOnBackMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
 
@@ -133,6 +131,14 @@ public:
 
       if (!KeyboardInteraction.SupplementInput()){KeyboardInteraction.ResetBlockNumber();cout<<1<<endl;}
       KeyboardInteraction.ResetEnter();
+    }
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+      sf::Vector2i BlockPos=FunctionsToControl::getPointOnMapForMouse(sf::Mouse::getPosition(Window),Window.getSize(),{int(Cords.x),int(Cords.y)});
+
+      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(BlockPos.x,BlockPos.y,KeyboardInteraction.GetBlockNumber());}
+      else {map.setBlockOnBackMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
     }
 
     SpeedMoving--;
@@ -202,7 +208,7 @@ int main(int argv,char **argc)
     {
       sf::Event WindowEvent;
 
-      Edit.Update(map);
+      Edit.Update(map,window);
 
       if (window.pollEvent(WindowEvent)){
         if (WindowEvent.type==sf::Event::Closed){window.close();break;}

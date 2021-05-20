@@ -14,7 +14,7 @@
 #include "Physics.hpp"
 #include "Souls.hpp"
 #include "Ui.hpp"
-#include "Control.hpp"
+#include "MainControl.hpp"
 #include "Game.hpp"
 using namespace std;
 
