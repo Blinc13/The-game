@@ -4,11 +4,11 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <thread>
-#include <chrono>
+
 #include "Funcs.hpp"
 #include "View.hpp"
 #include "Map.hpp"
+#include "ControlFunctions.hpp"
 using namespace std;
 
 
@@ -17,12 +17,12 @@ using namespace std;
 class KeyBoard
 {
 private:
-  bool EnterIsPressed=false;
+  bool EnterIsPressed=false,Supplement=false;
   string BlockNumber;
   int BlockInputNum=0,BlockInputEnter=0;
 
 public:
-  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){BlockNumber+=Number;BlockInputNum=16;return;}
+  #define KeyFind(Number,Num) if(Key::isKeyPressed(Key::Num)){if(Supplement){ResetBlockNumber();Supplement=false;}BlockNumber+=Number;BlockInputNum=16;return;}
   void UpdateBlockNumber()
   {
     if (BlockInputNum<=0){
@@ -37,12 +37,14 @@ public:
         KeyFind('8',Num8)
         KeyFind('9',Num9)
 
-        if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;}
+
+        if (Key::isKeyPressed(Key::Backspace)){BlockNumber="-16";BlockInputNum=16;Supplement=false;}
     }
 
-    BlockInputNum--;
-    if (Key::isKeyPressed(Key::Return)&&BlockInputEnter<=0){EnterIsPressed=true;BlockInputEnter=30;}
+    if ((Key::isKeyPressed(Key::Return))&&BlockInputEnter<=0){EnterIsPressed=true;Supplement=true;BlockInputEnter=30;}
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){Supplement=true;}
 
+    BlockInputNum--;
     BlockInputEnter--;
   }
 
@@ -66,16 +68,16 @@ public:
 
   ////////////////////////////////////////////////////////////////
 
-  bool CheckEnter()
+  bool CheckEnter() const
   {return EnterIsPressed;}
 
-  int GetBlockNumber()
-  {
-    //cout<<BlockNumber<<endl;
-    return atoi(BlockNumber.c_str());
-  }
+  bool SupplementInput() const
+  {return Supplement;}
 
-  bool CheckSide()
+  int GetBlockNumber() const
+  {return atoi(BlockNumber.c_str());}
+
+  bool CheckSide() const
   {return Key::isKeyPressed(Key::F);}
 
   ////////////////////////////////////////////////////////////////
@@ -97,7 +99,7 @@ private:
   sf::Sprite CenterSprite       ;
 
 public:
-  void Update(Map &map)
+  void Update(Map &map,sf::RenderWindow &Window)
   {
     KeyboardInteraction.UpdateBlockNumber();
 
@@ -121,13 +123,27 @@ public:
       SpeedMoving=3;
     }
 
-    if (KeyboardInteraction.CheckEnter()==true){
-            if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
-            else {map.setBlockOnBackMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+    if (KeyboardInteraction.CheckEnter()){
+      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+      else {map.setBlockOnBackMap(int(Cords.y)/16,int(Cords.x)/16,KeyboardInteraction.GetBlockNumber());}
+
+      //cout<<KeyboardInteraction.GetBlockNumber()<<endl;
 
 
-            KeyboardInteraction.ResetEnter();
-            KeyboardInteraction.ResetBlockNumber();
+      if (!KeyboardInteraction.SupplementInput()){KeyboardInteraction.ResetBlockNumber();cout<<1<<endl;}
+      KeyboardInteraction.ResetEnter();
+    }
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (sf::Mouse::getPosition(Window).x<=Window.getSize().x && sf::Mouse::getPosition(Window).y<=Window.getSize().y))
+    {
+      sf::Vector2i BlockPos=FunctionsToControl::getPointOnMapForMouse(sf::Mouse::getPosition(Window),Window.getSize(),{int(Cords.x),int(Cords.y)});
+
+      if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
+      else {map.setBlockOnBackMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
+
+      //cout<<KeyboardInteraction.GetBlockNumber()<<endl;
+
+      if (!KeyboardInteraction.SupplementInput()){KeyboardInteraction.ResetBlockNumber();cout<<1<<endl;}
     }
 
     SpeedMoving--;
@@ -197,7 +213,7 @@ int main(int argv,char **argc)
     {
       sf::Event WindowEvent;
 
-      Edit.Update(map);
+      Edit.Update(map,window);
 
       if (window.pollEvent(WindowEvent)){
         if (WindowEvent.type==sf::Event::Closed){window.close();break;}

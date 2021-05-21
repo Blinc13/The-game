@@ -14,7 +14,7 @@
 #include "Physics.hpp"
 #include "Souls.hpp"
 #include "Ui.hpp"
-#include "Control.hpp"
+#include "MainControl.hpp"
 #include "Game.hpp"
 using namespace std;
 
@@ -46,7 +46,7 @@ int main()
     controlHero(hero,map.getFrontMap(),window,Bullets,time);
     map.drawMap(window);
     Bullets.Update(window,map.getFrontMap(),hero.getCords(),time);
-    ui.drawUi(window,View,hero.getHealth(),hero.getAmmo()/10);
+    ui.drawUi(window,View,hero.getHealth(),hero.getAmmo()/10,hero.getRes());
 
     persons.Update(window,map.getFrontMap(),hero.getCords(),time);
     persons.Compire(Bullets);

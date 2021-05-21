@@ -6,7 +6,7 @@ class Ui
 private:
   sf::Texture UiElementsTexture;
   sf::Font TextFont;
-  sf::Text HealthText;
+  sf::Text Text;
 
   std::vector<sf::Sprite> UiElements;
   std::ostringstream HealthStream;
@@ -22,25 +22,33 @@ private:
     }
   }
 public:
-  void drawUi(sf::RenderWindow &Window,Cam &View,int health,int bullets)
+  void drawUi(sf::RenderWindow &Window,Cam &View,int health,int bullets,int res)
   {
     std::string StrHealth = std::to_string(health);
     sf::Vector2f UiCenter = View.getPosition();
 
     HealthStream<<"- "<<std::setw(3)<<StrHealth;
     UiElements[0].setPosition(UiCenter.x-250,UiCenter.y-120);
-    HealthText.setPosition(UiCenter.x-235,UiCenter.y-125);
-    HealthText.setString(HealthStream.str());
-    Window.draw(HealthText);
+    Text.setPosition(UiCenter.x-235,UiCenter.y-125);
+    Text.setString(HealthStream.str());
+    Window.draw(Text);
 
-    UiElements[1].setPosition(UiCenter.x-250,UiCenter.y-104);
+    HealthStream.str("");
+
+    UiElements[1].setPosition(UiCenter.x-250,UiCenter.y-80);
     drawLineOfElements(UiElements[1],Window,2*3,bullets);
-    //cout<<UiCenter.x-50<<' '<<UiCenter.y-16<<std::endl;
+
+    UiElements[2].setPosition(UiCenter.x-250,UiCenter.y-100);
+    HealthStream<<"- "<<std::setw(3)<<res;
+    Text.setPosition(UiCenter.x-235,UiCenter.y-104);
+    Text.setString(HealthStream.str());
+    Window.draw(UiElements[2]);
+    Window.draw(Text);
+
+    HealthStream.str("");
 
     Window.draw(UiElements[0]);
     //std::cout<<"complite"<<std::endl;
-
-    HealthStream.str("");
   }
 
 
@@ -54,8 +62,12 @@ public:
     UiElements[1].setTextureRect(sf::IntRect(9,298,2,3));
     UiElements[1].setScale(3,3);
 
+    UiElements[2].setTexture(UiElementsTexture);
+    UiElements[2].setTextureRect(sf::IntRect(260,20,10,7));
+    UiElements[2].setScale(1.8F,1.8F);
+
     TextFont.loadFromFile(FontFileDirectory);
-    HealthText.setFont(TextFont);
-    HealthText.setScale(0.5F,0.5F);
+    Text.setFont(TextFont);
+    Text.setScale(0.5F,0.5F);
   }
 };
