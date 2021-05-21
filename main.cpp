@@ -34,6 +34,7 @@ int main()
   sf::Clock Timer;
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
   float time;
+  loadVecOfSpritesTexture("Maps/StandartMap/MapData.data",map.getVecOfTextures());
 
   for (int k=1;k<40;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
   //cout<<SimbMapTest[3][3]<<endl;

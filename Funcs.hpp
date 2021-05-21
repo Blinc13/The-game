@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include "View.hpp"
 
 void loadMapFromTextFile(const std::string FileName,std::vector<std::string> &Vector,const std::string Simb)
 {
@@ -31,7 +32,7 @@ void loadMapFromTextFile(const std::string FileName,std::vector<std::string> &Ve
 }
 
 
-void saveMapFile(std::string FileDirectory,std::vector<std::string> &Vector)
+void saveMapFile(const std::string FileDirectory,std::vector<std::string> &Vector)
 {
   std::fstream File(FileDirectory);
 
@@ -41,4 +42,19 @@ void saveMapFile(std::string FileDirectory,std::vector<std::string> &Vector)
     std::cout<<Vector[k]<<std::endl;
   }
 
+}
+
+void loadVecOfSpritesTexture(const std::string FileDirectory,std::vector<imageArea> &Vector)
+{
+  std::ifstream File(FileDirectory);
+
+  Vector.resize(35);
+
+  for (int k=0;File.good();k++)
+  {
+    File>>Vector[k].x     ;
+    File>>Vector[k].y     ;
+    File>>Vector[k].Width ;
+    File>>Vector[k].Heigth;
+  }
 }
