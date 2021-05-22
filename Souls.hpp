@@ -54,7 +54,7 @@ protected:
     Body.setTextureRect(sf::IntRect(TextureArea.Width*int(AnStage),TextureArea.y,
                                     TextureArea.Width,TextureArea.Heigth));
 
-    if (AnStage>=4.0F){AnStage=0;}
+    if (AnStage>=3.0F){AnStage=0;}
 
 
     AnStage+=Time/20;
