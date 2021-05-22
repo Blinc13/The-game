@@ -244,11 +244,11 @@ public:
 
     //cout<<6<<endl;
 
-    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;}
-    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;}
+    if (Body.getPosition().x<pointPath[s].x*16 && UnlockSides[3]){XYSpeed.x=0.3F;}
+    else if (Body.getPosition().x>pointPath[s].x*16 && UnlockSides[2]){XYSpeed.x=-0.3F;}
 
-    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;}
-    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;}
+    if (Body.getPosition().y<pointPath[s].y*16 && UnlockSides[1]){XYSpeed.y=0.3F;}
+    else if (Body.getPosition().y>pointPath[s].y*16 && UnlockSides[0]){XYSpeed.y=-0.3F;}
 
     //cout<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl<<endl;
     //cout<<pointPath[s].x<<' '<<pointPath[s].y<<endl;
