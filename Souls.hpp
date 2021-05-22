@@ -210,13 +210,36 @@ private:
       Point={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
 
       if (map[Point.y][Point.x]==' '){pathLeft.push_back(Point);}
-      else {break;}
+      else {
+        int r,t;
+        for (int d=pathLeft.size()-1;d>0;d--)
+        {
+          r = Point.x-pathLeft[d].x;
+          t = Point.y-pathLeft[d].y;
+
+          cout<<r<<' '<<t<<endl;
+
+          if (t>0){pathLeft.push_back({pathLeft[d].x-1,pathLeft[d].y});continue;}
+          else if (t<0){pathLeft.push_back({pathLeft[d].x+1,pathLeft[d].y});continue;}
+
+          if (r>0){pathLeft.push_back({pathLeft[d].x,pathLeft[d].y-1});continue;}
+          else if (r<0){pathLeft.push_back({pathLeft[d].x,pathLeft[d].y+1});continue;}
+        }
+
+        break;
+      }
 
       //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
       k++;
     }while(k<x);
 
     pointPath=pathLeft;
+
+    for (int k=0;k<pointPath.size();k++)
+    {
+      cout<<k<<": "
+      <<pointPath[k].x<<';'<<pointPath[k].y<<endl;
+    }
   }
 public:
   bool Remove;
@@ -244,12 +267,21 @@ public:
 
     //cout<<6<<endl;
 
-    if (Body.getPosition().x<pointPath[s].x*16 && UnlockSides[3]){XYSpeed.x=0.3F;}
-    else if (Body.getPosition().x>pointPath[s].x*16 && UnlockSides[2]){XYSpeed.x=-0.3F;}
+    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;}
+    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;}
 
-    if (Body.getPosition().y<pointPath[s].y*16 && UnlockSides[1]){XYSpeed.y=0.3F;}
-    else if (Body.getPosition().y>pointPath[s].y*16 && UnlockSides[0]){XYSpeed.y=-0.3F;}
+    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;}
+    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;}
 
+
+    /*
+    if (Body.getPosition().x<pointPath[s].x*16 && !UnlockSides[3]){moving=true;}
+    else if (Body.getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;;}
+
+    if (Body.getPosition().y<pointPath[s].y*16 && !UnlockSides[1]){moving=true;}
+    else if (Body.getPosition().y>pointPath[s].y*16 && !UnlockSides[0]){moving=true;}
+
+    */
     //cout<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl<<endl;
     //cout<<pointPath[s].x<<' '<<pointPath[s].y<<endl;
     //cout<<5<<endl;
