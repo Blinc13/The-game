@@ -54,7 +54,7 @@ protected:
     Body.setTextureRect(sf::IntRect(TextureArea.Width*int(AnStage),TextureArea.y,
                                     TextureArea.Width,TextureArea.Heigth));
 
-    if (AnStage>=3.0F){AnStage=0;}
+    if (AnStage>=4.0F){AnStage=0;}
 
 
     AnStage+=Time/20;
@@ -200,12 +200,17 @@ private:
     //cout<<ObjCords.x<<' '<<ObjCords.y<<endl;
 
     int k=0;
+    sf::Vector2f Point;
     do
     {
       j+=h;
 
       if (j>1){y+=1;j-=1;}
-      pathLeft.push_back({ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)});
+
+      Point={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
+
+      if (map[Point.y][Point.x]==' '){pathLeft.push_back(Point);}
+      else {break;}
 
       //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
       k++;
