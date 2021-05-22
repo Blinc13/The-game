@@ -217,7 +217,7 @@ private:
           r = Point.x-pathLeft[d].x;
           t = Point.y-pathLeft[d].y;
 
-          cout<<r<<' '<<t<<endl;
+          //cout<<r<<' '<<t<<endl;
 
           if (t>0){pathLeft.push_back({pathLeft[d].x-1,pathLeft[d].y});continue;}
           else if (t<0){pathLeft.push_back({pathLeft[d].x+1,pathLeft[d].y});continue;}
@@ -235,11 +235,10 @@ private:
 
     pointPath=pathLeft;
 
-    for (int k=0;k<pointPath.size();k++)
+    /*for (int k=0;k<pointPath.size();k++)
     {
-      cout<<k<<": "
-      <<pointPath[k].x<<';'<<pointPath[k].y<<endl;
-    }
+      cout<<k<<": "<<pointPath[k].x<<';'<<pointPath[k].y<<endl;
+    }*/
   }
 public:
   bool Remove;
@@ -274,14 +273,14 @@ public:
     else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;}
 
 
-    /*
+
     if (Body.getPosition().x<pointPath[s].x*16 && !UnlockSides[3]){moving=true;}
     else if (Body.getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;;}
 
     if (Body.getPosition().y<pointPath[s].y*16 && !UnlockSides[1]){moving=true;}
     else if (Body.getPosition().y>pointPath[s].y*16 && !UnlockSides[0]){moving=true;}
 
-    */
+
     //cout<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl<<endl;
     //cout<<pointPath[s].x<<' '<<pointPath[s].y<<endl;
     //cout<<5<<endl;
