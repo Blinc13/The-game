@@ -211,22 +211,32 @@ private:
 
       if (map[Point.y][Point.x]==' '){pathLeft.push_back(Point);}
       else {
-        int r,t;
-        for (int d=pathLeft.size()-1;d>0;d--)
+        int r,t,l=pathLeft.size();
+        r = Point.x-pathLeft.back().x;
+        t = Point.y-pathLeft.back().y;
+
+        if      (t!=0){pointToWalk=checSideX(map,ObjCords,t);}
+        else if (r!=0){pointToWalk=checSideY(map,ObjCords,r);}
+
+        j=0;k=0;x=(pointToWalk.x-ObjCords.x);y=(pointToWalk.y-ObjCords.y);saveX=x;
+        h=(float)y/x;b=false;n=false;
+
+        if (x<0){b=true;x=-x;}
+        if (y<0){n=true;y=-y;}
+
+        pathLeft.resize(0);
+
+        cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
+
+        for (j=0,k=0;pathLeft.back()!=pointToWalk;k++,j++)
         {
-          r = Point.x-pathLeft[d].x;
-          t = Point.y-pathLeft[d].y;
+          //cout<<"findPath: "<<k<<endl;
+          if (j>1){y+=1;j=0.0F;}
 
-          //cout<<r<<' '<<t<<endl;
-
-          if (t>0){pathLeft.push_back({pathLeft[d].x-1,pathLeft[d].y});continue;}
-          else if (t<0){pathLeft.push_back({pathLeft[d].x+1,pathLeft[d].y});continue;}
-
-          if (r>0){pathLeft.push_back({pathLeft[d].x,pathLeft[d].y-1});continue;}
-          else if (r<0){pathLeft.push_back({pathLeft[d].x,pathLeft[d].y+1});continue;}
+          pathLeft[k]={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
         }
 
-        break;
+        //cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
       }
 
       //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
@@ -238,7 +248,42 @@ private:
     /*for (int k=0;k<pointPath.size();k++)
     {
       cout<<k<<": "<<pointPath[k].x<<';'<<pointPath[k].y<<endl;
-    }*/
+    }
+    */
+  }
+
+  sf::Vector2f checSideX(std::vector<std::string> map,sf::Vector2f objPos,int j)
+  {
+    cout<<"X: "<<j<<endl;
+    bool f,g;
+
+    for (int k=0;k<3;k++)
+    {
+      if (map[objPos.y+j][objPos.x+k]==' ' && f){return {objPos.x+k+1,objPos.y};}
+      if (f){f=(map[objPos.y][objPos.x+k+1]==' ');}
+
+      if (map[objPos.y+j][objPos.x-k]==' ' && g){return {objPos.x-k-1,objPos.y};}
+      if (g){g=(map[objPos.y][objPos.x-k-1]==' ');}
+    }
+
+    return {-1,-1};
+  }
+
+  sf::Vector2f checSideY(std::vector<std::string> map,sf::Vector2f objPos,int j)
+  {
+    bool f,g;
+    cout<<"Y: "<<j<<endl;
+
+    for (int k=0;k<3;k++)
+    {
+      if (map[objPos.y+k][objPos.x+j]==' ' && f){return {objPos.x,objPos.x+k};}
+      if (f){f=(map[objPos.y+k+1][objPos.x]==' ');}
+
+      if (map[objPos.y-k][objPos.x+j]==' ' && g){return {objPos.x,objPos.x+k};}
+      if (g){g=(map[objPos.y-k-1][objPos.x]==' ');}
+    }
+
+    return {-1,-1};
   }
 public:
   bool Remove;
