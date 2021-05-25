@@ -231,6 +231,7 @@ private:
 
         pathLeft.push_back(pointToWalk);
 
+        break;
         /*for (j=0,k=0;;k++,j++)
         {
           //cout<<"findPath: "<<k<<endl;
@@ -255,7 +256,7 @@ private:
     */
   }
 
-  sf::Vector2f checSideX(std::vector<std::string> map,sf::Vector2f objPos,int j)
+  inline sf::Vector2f checSideX(std::vector<std::string> map,sf::Vector2f objPos,int j)
   {
     cout<<"X: "<<j<<endl;
     bool f,g;
@@ -272,7 +273,7 @@ private:
     return {-1,-1};
   }
 
-  sf::Vector2f checSideY(std::vector<std::string> map,sf::Vector2f objPos,int j)
+  inline sf::Vector2f checSideY(std::vector<std::string> map,sf::Vector2f objPos,int j)
   {
     bool f,g;
     cout<<"Y: "<<j<<endl;
