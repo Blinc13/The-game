@@ -215,8 +215,8 @@ private:
         r = Point.x-pathLeft.back().x;
         t = Point.y-pathLeft.back().y;
 
-        if      (t!=0){pointToWalk=checSideX(map,ObjCords,t);}
-        else if (r!=0){pointToWalk=checSideY(map,ObjCords,r);}
+        if      (t!=0){pointToWalk=checSideX(map,pathLeft.back(),t);}
+        else if (r!=0){pointToWalk=checSideY(map,pathLeft.back(),r);}
 
         j=0;k=0;x=(pointToWalk.x-ObjCords.x);y=(pointToWalk.y-ObjCords.y);saveX=x;
         h=(float)y/x;b=false;n=false;
@@ -226,15 +226,18 @@ private:
 
         pathLeft.resize(0);
 
-        cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
+        cout<<"Point: "<<pointToWalk.x<<' '<<pointToWalk.y<<endl
+        <<"Obj: "<<ObjCords.x<<' '<<ObjCords.y<<endl;
 
-        for (j=0,k=0;pathLeft.back()!=pointToWalk;k++,j++)
+        pathLeft.push_back(pointToWalk);
+
+        /*for (j=0,k=0;;k++,j++)
         {
           //cout<<"findPath: "<<k<<endl;
           if (j>1){y+=1;j=0.0F;}
 
           pathLeft[k]={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
-        }
+        }*/
 
         //cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
       }
