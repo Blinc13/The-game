@@ -29,14 +29,14 @@ int main()
   imageArea area={0,0,16,29};
   Hero hero("Sprites/Souls/Herous/character.png",area,{5*16,7*16},10);
   Objects<Enemy> persons;
-  persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
+  //persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
   Cam View;
   sf::Clock Timer;
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
   float time;
   loadVecOfSpritesTexture("Maps/StandartMap/MapData.data",map.getVecOfTextures());
 
-  for (int k=1;k<40;k++){persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{4*16,k*16}));}
+  for (int k=1;k<40;k++){persons.append(Enemy("Sprites/Souls/Herous/ModularActor4_3.png",{0,0,46,52},{4*16,k*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
   for (int k=0;k<51;k++){cout<<SimbMapTest[k]<<endl;}
 

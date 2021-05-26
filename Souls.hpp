@@ -99,7 +99,6 @@ public:
     Body.setTextureRect(sf::IntRect(Area.x,Area.y,
       Area.Width,Area.Heigth));
   }
-
 };
 
 
@@ -179,8 +178,8 @@ class Enemy:public Soul
 {
 private:
   mutable sf::Vector2f XYSpeed;
-  std::vector<sf::Vector2f> pointPath;
-  int s;
+  mutable std::vector<sf::Vector2f> pointPath;
+  int s,Side=0;
 
   bool moving=true;
   //II
@@ -210,7 +209,8 @@ private:
       Point={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
 
       if (map[Point.y][Point.x]==' '){pathLeft.push_back(Point);}
-      else {
+      else if (!pathLeft.empty())
+      {
         int r,t,l=pathLeft.size();
         r = Point.x-pathLeft.back().x;
         t = Point.y-pathLeft.back().y;
@@ -242,6 +242,7 @@ private:
 
         //cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
       }
+      else {break;}
 
       //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
       k++;
@@ -296,6 +297,8 @@ public:
   {
     Body.move(XYSpeed.x*time,XYSpeed.y*time);
 
+    AnimationFunc(Side,time);
+
     XYSpeed={0.0F,0.0F};
   }
 
@@ -315,16 +318,16 @@ public:
 
     //cout<<6<<endl;
 
-    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;}
-    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;}
+    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;Side=2;}
+    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;Side=1;}
 
-    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;}
-    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;}
+    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;Side=0;}
+    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;Side=3;}
 
 
 
     if (Body.getPosition().x<pointPath[s].x*16 && !UnlockSides[3]){moving=true;}
-    else if (Body.getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;;}
+    else if (Body.getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;}
 
     if (Body.getPosition().y<pointPath[s].y*16 && !UnlockSides[1]){moving=true;}
     else if (Body.getPosition().y>pointPath[s].y*16 && !UnlockSides[0]){moving=true;}
@@ -348,6 +351,7 @@ public:
   Enemy(const std::string FileDirectory,const imageArea Area,const sf::Vector2f Position):
   Soul(FileDirectory,Area,13,115),Remove(false)
   {
+    //BodyTexture.loadFromFile("/home/diman/Рабочий стол/Game/Sprites/Souls/Enemies/tile_hero.png");
     Body.setPosition(Position);
     Body.setOrigin({Area.Width/2,Area.Heigth/1.5});
   }
