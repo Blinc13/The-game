@@ -123,8 +123,9 @@ public:
   void fire(sf::Vector2f speed,Objects<Bullet> &obj)
   {
     if (Amunition<=0){return;}
-    obj.append(Bullet("Sprites/Ui/Center.png",{300,300,4,4},getCords(),{speed.x,speed.y}));
+    obj.append(Bullet("Sprites/Objects/Overworld.png",{200,150,10,10},getCords(),{speed.x,speed.y}));
 
+    cout<<1<<endl;
     subtractAmmo(1);
   }
 

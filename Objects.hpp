@@ -29,23 +29,27 @@ public:
   void setPosition(sf::Vector2f &cords)
   {BulletSprite.setPosition(cords);}
 
-  Sprite &draw()
-  {return BulletSprite;}
+  Sprite draw()
+  {
+      sf::Sprite sprite;
+      sprite.setTexture(BulletTexture);
+      return sprite;
+}
 
   Vector2f getCords()
   {return BulletSprite.getPosition();}
 
 
-  Bullet(string FileDirectory="Sprites/Ui/Center.png",imageArea TextureCords={300,300,4,4},Vector2f Cords={30,30},Vector2f speed={0,0}):
-  Remove(false)
+  Bullet(string FileDirectory="Sprites/Ui/Center.png",imageArea TextureCords={100,100,4,4},Vector2f Cords={30,30},Vector2f speed={0,0}):Remove(false)
   {
-    BulletTexture.loadFromFile(FileDirectory);
+    BulletTexture.loadFromFile("Sprites/Ui/Center.png");
     BulletSprite.setTexture(BulletTexture);
 
     BulletSprite.setTextureRect(IntRect(TextureCords.x,TextureCords.y,TextureCords.Width,TextureCords.Heigth));
     BulletSprite.setPosition(Cords);
     BulletSprite.setOrigin(TextureCords.Width/2,TextureCords.Heigth/2);
 
+    cout<<TextureCords.x<<' '<<TextureCords.y<<endl;
     Speed=speed;
   }
 };
