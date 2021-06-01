@@ -43,7 +43,7 @@ protected:
 
   imageArea TextureArea;
   sf::Texture BodyTexture;
-  sf::Sprite Body;
+  sf::Sprite *Body;
 
 
 
@@ -51,7 +51,7 @@ protected:
   {
     TextureArea.y=Side*32;
 
-    Body.setTextureRect(sf::IntRect(TextureArea.Width*int(AnStage),TextureArea.y,
+    Body->setTextureRect(sf::IntRect(TextureArea.Width*int(AnStage),TextureArea.y,
                                     TextureArea.Width,TextureArea.Heigth));
 
     if (AnStage>=3.0F){AnStage=0;}
@@ -91,12 +91,12 @@ public:
   bool getBlockSide(int Position)
   {return UnlockSides[Position];}
 
-  Soul(std::string FileDirectory,const imageArea &Area,float D,float H):TextureArea(Area),AnStage(0),Damage(D),Health(H)
+  Soul(std::string FileDirectory,const imageArea &Area,float D,float H):TextureArea(Area),AnStage(0),Damage(D),Health(H),Body(new sf::Sprite())
   {
     BodyTexture.loadFromFile(FileDirectory);
 
-    Body.setTexture(BodyTexture);
-    Body.setTextureRect(sf::IntRect(Area.x,Area.y,
+    Body->setTexture(BodyTexture);
+    Body->setTextureRect(sf::IntRect(Area.x,Area.y,
       Area.Width,Area.Heigth));
   }
 };
@@ -115,7 +115,7 @@ public:
 
   void move(const float x,const float y,const int Side,const float &Time)
   {
-    Body.move(x,y);
+    Body->move(x,y);
     AnimationFunc(Side,Time);
   }
 
@@ -130,7 +130,7 @@ public:
   }
 
   inline void setPosition(const int x,const int y)
-  {Body.setPosition(x*16,y*16);}
+  {Body->setPosition(x*16,y*16);}
 
   inline void setAmmo(const int x)
   {Amunition=x;}
@@ -148,7 +148,7 @@ public:
   {Resources-=k;}
                     //Get//
   inline sf::Vector2f getCords() const
-  {return Body.getPosition();}
+  {return Body->getPosition();}
 
   inline int getAmmo()           const
   {return Amunition;}
@@ -156,15 +156,18 @@ public:
   inline int getRes()            const
   {return Resources;}
 
-  inline sf::Sprite Sprite()     const
-  {return Body;}
+  inline sf::Sprite Sprite()
+  {
+      Body->setTexture(BodyTexture);
+      return *Body;
+  }
 
 
   Hero(std::string FileDirectory,imageArea Area,sf::Vector2f Cords,float MaxSpeedInput):
   Soul(FileDirectory,Area,25,100),Amunition(100)
   {
-    Body.setPosition(Cords.x,Cords.y);
-    Body.setOrigin(Area.Width/2,(Area.Heigth/4)*3);
+    Body->setPosition(Cords.x,Cords.y);
+    Body->setOrigin(Area.Width/2,(Area.Heigth/4)*3);
     SpeedX=0;
     SpeedY=0;
     MaxSpeed=MaxSpeedInput;
@@ -186,7 +189,7 @@ private:
   //II
   void findPath(const std::vector<std::string> &map,sf::Vector2f pointToWalk)
   {
-    sf::Vector2f ObjCords={trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16)};
+    sf::Vector2f ObjCords={trunc(Body->getPosition().x/16),trunc(Body->getPosition().y/16)};
     std::vector<sf::Vector2f> pathLeft;
     pointToWalk={trunc(pointToWalk.x/16),trunc(pointToWalk.y/16)};
     int x=(pointToWalk.x-ObjCords.x),y=(pointToWalk.y-ObjCords.y),saveX=x;
@@ -296,7 +299,7 @@ public:
 
   void move(const float &time)
   {
-    Body.move(XYSpeed.x*time,XYSpeed.y*time);
+    Body->move(XYSpeed.x*time,XYSpeed.y*time);
 
     AnimationFunc(Side,time);
 
@@ -310,7 +313,7 @@ public:
 
     //cout<<trunc(Body.getPosition().x/16)<<trunc(Body.getPosition().y/16)<<endl;
 
-    if (sf::Vector2f(trunc(Body.getPosition().x/16),trunc(Body.getPosition().y/16))==pointPath[s]){
+    if (sf::Vector2f(trunc(Body->getPosition().x/16),trunc(Body->getPosition().y/16))==pointPath[s]){
       s++;
 
       //cout<<1<<endl;
@@ -319,19 +322,19 @@ public:
 
     //cout<<6<<endl;
 
-    if (Body.getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;Side=2;}
-    else if (Body.getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;Side=1;}
+    if (Body->getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;Side=3;}
+    else if (Body->getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;Side=2;}
 
-    if (Body.getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;Side=0;}
-    else if (Body.getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;Side=3;}
+    if (Body->getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;Side=0;}
+    else if (Body->getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;Side=1;}
 
 
 
-    if (Body.getPosition().x<pointPath[s].x*16 && !UnlockSides[3]){moving=true;}
-    else if (Body.getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;}
+    if (Body->getPosition().x<pointPath[s].x*16 && !UnlockSides[3]){moving=true;}
+    else if (Body->getPosition().x>pointPath[s].x*16 && !UnlockSides[2]){moving=true;}
 
-    if (Body.getPosition().y<pointPath[s].y*16 && !UnlockSides[1]){moving=true;}
-    else if (Body.getPosition().y>pointPath[s].y*16 && !UnlockSides[0]){moving=true;}
+    if (Body->getPosition().y<pointPath[s].y*16 && !UnlockSides[1]){moving=true;}
+    else if (Body->getPosition().y>pointPath[s].y*16 && !UnlockSides[0]){moving=true;}
 
 
     //cout<<trunc(Body.getPosition().x/16)<<' '<<trunc(Body.getPosition().y/16)<<endl<<endl;
@@ -342,10 +345,14 @@ public:
 
 
   sf::Sprite &draw()
-  {return Body;}
+  {
+      Body->setTexture(BodyTexture);
+
+      return (*Body);
+  }
 
   sf::Vector2f getCords()
-  {return Body.getPosition();}
+  {return Body->getPosition();}
 
 
 
@@ -353,7 +360,7 @@ public:
   Soul(FileDirectory,Area,13,115),Remove(false)
   {
     //BodyTexture.loadFromFile("/home/diman/Рабочий стол/Game/Sprites/Souls/Enemies/tile_hero.png");
-    Body.setPosition(Position);
-    Body.setOrigin({Area.Width/2,Area.Heigth/1.5});
+    Body->setPosition(Position);
+    Body->setOrigin({(float)Area.Width/2.0F,(float)Area.Heigth/1.5F});
   }
 };
