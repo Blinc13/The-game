@@ -47,9 +47,9 @@ protected:
 
 
 
-  void AnimationFunc(const int Side,const float Time)
+  void AnimationFunc(const float Depth,const float Time)
   {
-    TextureArea.y=Side*32;
+    TextureArea.y=Depth*32;
 
     Body->setTextureRect(sf::IntRect(TextureArea.Width*int(AnStage),TextureArea.y,
                                     TextureArea.Width,TextureArea.Heigth));
@@ -113,10 +113,10 @@ protected:
 public:
                             //Set//
 
-  void move(const float x,const float y,const int Side,const float &Time)
+  void move(const float x,const float y,const float AnY,const float &Time)
   {
     Body->move(x,y);
-    AnimationFunc(Side,Time);
+    AnimationFunc(AnY,Time);
   }
 
                             //For future//
@@ -125,7 +125,6 @@ public:
     if (Amunition<=0){return;}
     obj.append(Bullet("Sprites/Ui/Center.png",{200,150,4,4},getCords(),{speed.x,speed.y}));
 
-    cout<<1<<endl;
     subtractAmmo(1);
   }
 
@@ -183,7 +182,8 @@ class Enemy:public Soul
 private:
   mutable sf::Vector2f XYSpeed;
   mutable std::vector<sf::Vector2f> pointPath;
-  int s,Side=0;
+  int s;
+  float Depth;
 
   bool moving=true;
   //II
@@ -301,7 +301,7 @@ public:
   {
     Body->move(XYSpeed.x*time,XYSpeed.y*time);
 
-    AnimationFunc(Side,time);
+    AnimationFunc(Depth,time);
 
     XYSpeed={0.0F,0.0F};
   }
@@ -322,11 +322,11 @@ public:
 
     //cout<<6<<endl;
 
-    if (Body->getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;Side=3;}
-    else if (Body->getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;Side=2;}
+    if (Body->getPosition().x<pointPath[s].x*16){XYSpeed.x=0.3F;Depth=3.3F;}
+    else if (Body->getPosition().x>pointPath[s].x*16){XYSpeed.x=-0.3F;Depth=1.7F;}
 
-    if (Body->getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;Side=0;}
-    else if (Body->getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;Side=1;}
+    if (Body->getPosition().y<pointPath[s].y*16){XYSpeed.y=0.3F;Depth=0.0F;}
+    else if (Body->getPosition().y>pointPath[s].y*16){XYSpeed.y=-0.3F;Depth=4.9F;}
 
 
 
@@ -347,7 +347,6 @@ public:
   sf::Sprite &draw()
   {
       Body->setTexture(BodyTexture);
-
       return (*Body);
   }
 
@@ -362,5 +361,6 @@ public:
     //BodyTexture.loadFromFile("/home/diman/Рабочий стол/Game/Sprites/Souls/Enemies/tile_hero.png");
     Body->setPosition(Position);
     Body->setOrigin({(float)Area.Width/2.0F,(float)Area.Heigth/1.5F});
+    Body->setScale(0.5F,0.5F);
   }
 };
