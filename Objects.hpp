@@ -10,7 +10,7 @@ private:
   Vector2f Speed;
 
   Texture BulletTexture;
-  Sprite BulletSprite;
+  Sprite *BulletSprite;
 public:
   bool Remove;
   float Damage;
@@ -18,33 +18,35 @@ public:
 
   void Update(const sf::Vector2f cords,const std::vector<std::string> &map,const float time)
   {
-    BulletSprite.move(Speed);
+    BulletSprite->move(Speed);
 
-    if (map[(int)BulletSprite.getPosition().y/16][(int)BulletSprite.getPosition().x/16]!=' '){Remove=true;}
+    if (map[(int)BulletSprite->getPosition().y/16][(int)BulletSprite->getPosition().x/16]!=' '){Remove=true;}
   }
 
   inline void blockSide(int x,bool k)
   {/*Remove=!k;*/}
 
   void setPosition(sf::Vector2f &cords)
-  {BulletSprite.setPosition(cords);}
+  {BulletSprite->setPosition(cords);}
 
-  Sprite &draw()
-  {return BulletSprite;}
+  Sprite draw()
+  {
+      BulletSprite->setTexture(BulletTexture);
+      return (*BulletSprite);
+  }
 
   Vector2f getCords()
-  {return BulletSprite.getPosition();}
+  {return BulletSprite->getPosition();}
 
 
-  Bullet(string FileDirectory="Sprites/Ui/Center.png",imageArea TextureCords={300,300,4,4},Vector2f Cords={30,30},Vector2f speed={0,0}):
-  Remove(false)
+  Bullet(string FileDirectory="Sprites/Ui/Center.png",imageArea TextureCords={100,100,4,4},Vector2f Cords={30,30},Vector2f speed={0,0}):Remove(false),BulletSprite(new Sprite())
   {
     BulletTexture.loadFromFile(FileDirectory);
-    BulletSprite.setTexture(BulletTexture);
+    BulletSprite->setTexture(BulletTexture);
 
-    BulletSprite.setTextureRect(IntRect(TextureCords.x,TextureCords.y,TextureCords.Width,TextureCords.Heigth));
-    BulletSprite.setPosition(Cords);
-    BulletSprite.setOrigin(TextureCords.Width/2,TextureCords.Heigth/2);
+    BulletSprite->setTextureRect(IntRect(TextureCords.x,TextureCords.y,TextureCords.Width,TextureCords.Heigth));
+    BulletSprite->setPosition(Cords);
+    BulletSprite->setOrigin(TextureCords.Width/2,TextureCords.Heigth/2);
 
     Speed=speed;
   }

@@ -39,7 +39,7 @@ void saveMapFile(const std::string FileDirectory,std::vector<std::string> &Vecto
   for (int k=0;k<Vector.size();k++)
   {
     File<<Vector[k]<<'\n';
-    std::cout<<Vector[k]<<std::endl;
+   // std::cout<<Vector[k]<<std::endl;
   }
 
 }

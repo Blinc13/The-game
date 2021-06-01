@@ -1,5 +1,5 @@
 #pragma once
-
+using namespace std;
 std::vector<std::string> SimbMapTest;
 
 std::vector<std::string> BackgroundMapTest;

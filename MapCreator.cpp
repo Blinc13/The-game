@@ -202,6 +202,12 @@ int main(int argv,char **argc)
     loadMapFromTextFile(ProgectDirectory+"/FrontMap.map", FrontMap, " ");
     loadMapFromTextFile(ProgectDirectory+"/BackMap.map", BackMap, "0");
 
+    for (int k=0;k<50;k++)
+        cout<<FrontMap[k]<<endl;
+
+    for (int k=0;k<50;k++)
+        cout<<BackMap[k]<<endl;
+
     sf::RenderWindow window(sf::VideoMode(600,300),"MapEditor");
     window.setFramerateLimit(60);
     Editor Edit("Sprites/Ui/Center.png");
