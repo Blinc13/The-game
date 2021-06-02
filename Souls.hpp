@@ -203,24 +203,25 @@ private:
     //cout<<ObjCords.x<<' '<<ObjCords.y<<endl;
 
     int k=0;
-    sf::Vector2f Point;
+    sf::Vector2f Point,BackPoint;
     do
     {
       j+=h;
 
       if (j>1){y+=1;j-=1;}
 
+      BackPoint=Point;
       Point={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
 
-      if (map[Point.y][Point.x]==' '){pathLeft.push_back(Point);}
-      else if (!pathLeft.empty())
+      if (map[Point.y][Point.x]==' '){}
+      else
       {
         int r,t,l=pathLeft.size();
-        r = Point.x-pathLeft.back().x;
-        t = Point.y-pathLeft.back().y;
+        r = Point.x-BackPoint.x;
+        t = Point.y-BackPoint.y;
 
-        if      (t!=0){pointToWalk=checSideX(map,pathLeft.back(),t);}
-        else if (r!=0){pointToWalk=checSideY(map,pathLeft.back(),r);}
+        if      (t!=0){pointToWalk=checSideX(map,BackPoint,t);}
+        else if (r!=0){pointToWalk=checSideY(map,BackPoint,r);}
 
         j=0;k=0;x=(pointToWalk.x-ObjCords.x);y=(pointToWalk.y-ObjCords.y);saveX=x;
         h=(float)y/x;b=false;n=false;
@@ -236,20 +237,11 @@ private:
         pathLeft.push_back(pointToWalk);
 
         break;
-        /*for (j=0,k=0;;k++,j++)
-        {
-          //cout<<"findPath: "<<k<<endl;
-          if (j>1){y+=1;j=0.0F;}
+    }
 
-          pathLeft[k]={ObjCords.x+float((b)?-k:k),ObjCords.y+float((n)?-y:y)};
-        }*/
+    k++;
 
-        //cout<<pointToWalk.x<<' '<<pointToWalk.y<<endl;
-      }
-      else {break;}
-
-      //cout<<"vector: "<<ObjCords.x+float((b)?-k:k)<<' '<<ObjCords.y+float((n)?-y:y)<<endl;
-      k++;
+    if (k==x){pathLeft.push_back(Point);}
     }while(k<x);
 
     pointPath=pathLeft;
