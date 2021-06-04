@@ -67,7 +67,7 @@ int main()
       if (event.type==sf::Event::Closed){window.close();break;}
     }
     //cout<<3<<endl;
-    View.setCamOnObj(hero);
+    View.setPosition(hero.getCords());
     window.setView(View.getCamForDrav());
     //cout<<4<<endl;
     window.draw(hero.Sprite());
