@@ -15,12 +15,12 @@
 #pragma once
 using namespace std;
 
-static const int   NumInGame                    =16   ;
-static const int   NumInWindow                  =20   ;
-static const int   MaxBlockDistance             =2    ;
-static const float MaxBulletSpeed               =6.0F ;
-static const float DelayBetweenShots            =25.0F;
-static const float DelayInBlockInstallation     =30.0F;
+static const int   NumInGame                   =16   ;
+static const int   NumInWindow                 =60  ;
+static const int   MaxBlockDistance            =2    ;
+static const float MaxBulletSpeed              =6.0F ;
+static const float DelayBetweenShots           =25.0F;
+static const float DelayInBlockInstallation    =30.0F;
 
 
 class FunctionsToControl
@@ -80,7 +80,7 @@ public:
     return BulletSpeed;
   }
 
-  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,const sf::Vector2u SizeOfWindow,sf::Vector2i point,const int Max=NumInWindow)
+  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,const sf::Vector2u SizeOfWindow,sf::Vector2i point,bool Limitation=false,const int Max=MaxBlockDistance)
   {
     static bool k,j;
 
@@ -90,13 +90,14 @@ public:
     Cords.x+=(point.x/=NumInGame)-(SizeOfWindow.x/2)/NumInWindow;
     Cords.y+=(point.y/=NumInGame)-(SizeOfWindow.y/2)/NumInWindow;
 
-    if ((Cords.x-point.x > Max) || (Cords.x-point.x < -Max))
-    {Cords.x=substract(Cords.x,point.x,MaxBlockDistance);}
+    if (Limitation){
+      if ((Cords.x-point.x > Max) || (Cords.x-point.x < -Max))
+      {Cords.x=substract(Cords.x,point.x,MaxBlockDistance);}
 
-    if ((Cords.y-point.y > Max) || (Cords.y-point.y < -Max))
-    {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
-
-    //cout<<Cords.y-point.y<<endl;
+      if ((Cords.y-point.y > Max) || (Cords.y-point.y < -Max))
+      {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
+    }
+    //cout<<Cords.x<<' '<<Cords.y<<endl;
 
     return Cords;
   }

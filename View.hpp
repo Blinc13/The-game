@@ -21,21 +21,11 @@ protected:
 
 public:
 ///////////////////////set/////////////////////////
-  template<class x>
-  void setCamOnObj(const x &Obj)
-  {
-    sf::Vector2f Centr=Obj.getCords();
-    Camera.setCenter(trunc(Centr.x),trunc(Centr.y));
-  }
-
   void setZoom(float x)
   {Camera.zoom(x);}
 
-  void setPosition(const float x,const float y)
-  {Camera.setCenter(x,y);}
-
-  void setPosition(const sf::Vector2<int> Cords)
-  {Camera.setCenter(Cords.x,Cords.y);}
+  void setPosition(const sf::Vector2f &Cords)
+  {Camera.setCenter(Cords);}
 
   void setRotation(float x)
   {Camera.setRotation(x);}

@@ -163,7 +163,10 @@ public:
     Cords.y=Cordinats.y;
   }
 
-  sf::Vector2<int> &getCords()
+  sf::Vector2f getCordsf()
+  {return {Cords.x,Cords.y};}
+
+  sf::Vector2i &getCords()
   {return Cords;}
 
   void draw(sf::RenderWindow &window)
@@ -220,7 +223,7 @@ int main(int argv,char **argc)
       }
 
       map.drawMap(window);
-      View.setPosition(Edit.getCords());
+      View.setPosition(Edit.getCordsf());
       window.setView(View.getCamForDrav());
       Edit.draw(window);
       window.display();
