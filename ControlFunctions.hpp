@@ -16,7 +16,7 @@
 using namespace std;
 
 static const int   NumInGame                   =16   ;
-static const int   NumInWindow                 =20   ;
+static const int   NumInWindow                 =60  ;
 static const int   MaxBlockDistance            =2    ;
 static const float MaxBulletSpeed              =6.0F ;
 static const float DelayBetweenShots           =25.0F;
