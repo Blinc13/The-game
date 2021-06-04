@@ -221,6 +221,11 @@ int main(int argv,char **argc)
       if (window.pollEvent(WindowEvent)){
         if (WindowEvent.type==sf::Event::Closed){window.close();break;}
       }
+      if (Key::isKeyPressed(Key::S)){
+        saveMapFile(ProgectDirectory+"/FrontMap.map",map.getFrontMap());
+        saveMapFile(ProgectDirectory+"/BackMap.map",map.getBackMap());
+    }
+    if (Key::isKeyPressed(Key::X)){window.close();return 0;}
 
       map.drawMap(window);
       View.setPosition(Edit.getCordsf());
