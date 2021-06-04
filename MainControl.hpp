@@ -46,7 +46,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
   {
     if (hero.getRes()>0){
       sf::Vector2f heroCords=hero.getCords();
-      sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)},MaxBlockDistance);
+      sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)},true);
 
 
       if (map[cords.y][cords.x]==' '){map[cords.y][cords.x]=(2+48);hero.subtractRes(1);BlockDelay=0.0F;}

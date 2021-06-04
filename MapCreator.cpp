@@ -136,7 +136,7 @@ public:
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (sf::Mouse::getPosition(Window).x<=Window.getSize().x && sf::Mouse::getPosition(Window).y<=Window.getSize().y))
     {
-      sf::Vector2i BlockPos=FunctionsToControl::getPointOnMapForMouse(sf::Mouse::getPosition(Window),Window.getSize(),{int(Cords.x),int(Cords.y)},20);
+      sf::Vector2i BlockPos=FunctionsToControl::getPointOnMapForMouse(sf::Mouse::getPosition(Window),Window.getSize(),{int(Cords.x),int(Cords.y)});
 
       if (KeyboardInteraction.CheckSide()){map.setBlockOnFrontMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
       else {map.setBlockOnBackMap(BlockPos.y,BlockPos.x,KeyboardInteraction.GetBlockNumber());}
