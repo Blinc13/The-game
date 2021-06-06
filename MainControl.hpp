@@ -41,7 +41,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
     hero.fire({Speed.x,Speed.y},BulletsV);
   }
 
-  if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && BlockDelay>DelayInBlockInstallation &&
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && BlockDelay>DelayInBlockInstallation &&
      (MousePosition.x<=window.getSize().x && MousePosition.y<=window.getSize().y))
   {
     if (hero.getRes()>0){
@@ -51,6 +51,15 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 
       if (map[cords.y][cords.x]==' '){map[cords.y][cords.x]=(2+48);hero.subtractRes(1);BlockDelay=0.0F;}
     }
+  }
+
+   if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && BlockDelay>DelayInBlockInstallation &&
+     (MousePosition.x<=window.getSize().x && MousePosition.y<=window.getSize().y))
+  {
+    sf::Vector2f heroCords=hero.getCords();
+    sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)},true);
+
+    if (map[cords.y][cords.x] == '1' || map[cords.y][cords.x] == '2'){map[cords.y][cords.x]=' ';hero.appendRes(1);}
   }
 
 

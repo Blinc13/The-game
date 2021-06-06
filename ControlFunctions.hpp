@@ -88,15 +88,11 @@ public:
     //Cords.x-=SizeOfWindow.x/2;
     //Cords.y-=SizeOfWindow.y/2;
 
-    //cout<<"Size: "<<SizeOfWindow.x<<":    "<<SizeOfWindow.y<<endl;
-
     Cords.x/=SizeOfWindow.x/NumInWindowX;
     Cords.y/=SizeOfWindow.y/NumInWindowY;
 
     Cords.x-=NumInWindowX/2;
     Cords.y-=NumInWindowY/2;
-
-    cout<<NumInWindowX/2<<endl;
 
 
     Cords.x+=(point.x/=NumInGame);//-((SizeOfWindow.x/2)/NumInWindowX);
@@ -109,7 +105,6 @@ public:
       if ((Cords.y-point.y > Max) || (Cords.y-point.y < -Max))
       {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
     }
-    cout<<Cords.x<<' '<<Cords.y<<endl;
 
     return Cords;
   }
