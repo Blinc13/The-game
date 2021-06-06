@@ -16,7 +16,8 @@
 using namespace std;
 
 static const int   NumInGame                   =16   ;
-static const int   NumInWindow                 =60  ;
+static const int   NumInWindowX                 =31  ;
+static const int   NumInWindowY                =16  ;
 static const int   MaxBlockDistance            =2    ;
 static const float MaxBulletSpeed              =6.0F ;
 static const float DelayBetweenShots           =25.0F;
@@ -80,15 +81,26 @@ public:
     return BulletSpeed;
   }
 
-  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,const sf::Vector2u SizeOfWindow,sf::Vector2i point,bool Limitation=false,const int Max=MaxBlockDistance)
+  static inline sf::Vector2i getPointOnMapForMouse(sf::Vector2i Cords,sf::Vector2u SizeOfWindow,sf::Vector2i point,bool Limitation=false,const int Max=MaxBlockDistance)
   {
     static bool k,j;
 
-    Cords.x/=NumInWindow;
-    Cords.y/=NumInWindow;
+    //Cords.x-=SizeOfWindow.x/2;
+    //Cords.y-=SizeOfWindow.y/2;
 
-    Cords.x+=(point.x/=NumInGame)-(SizeOfWindow.x/2)/NumInWindow;
-    Cords.y+=(point.y/=NumInGame)-(SizeOfWindow.y/2)/NumInWindow;
+    //cout<<"Size: "<<SizeOfWindow.x<<":    "<<SizeOfWindow.y<<endl;
+
+    Cords.x/=SizeOfWindow.x/NumInWindowX;
+    Cords.y/=SizeOfWindow.y/NumInWindowY;
+
+    Cords.x-=NumInWindowX/2;
+    Cords.y-=NumInWindowY/2;
+
+    cout<<NumInWindowX/2<<endl;
+
+
+    Cords.x+=(point.x/=NumInGame);//-((SizeOfWindow.x/2)/NumInWindowX);
+    Cords.y+=(point.y/=NumInGame);//-((SizeOfWindow.y/2)/NumInWindowY);
 
     if (Limitation){
       if ((Cords.x-point.x > Max) || (Cords.x-point.x < -Max))
@@ -97,7 +109,7 @@ public:
       if ((Cords.y-point.y > Max) || (Cords.y-point.y < -Max))
       {Cords.y=substract(Cords.y,point.y,MaxBlockDistance);}
     }
-    //cout<<Cords.x<<' '<<Cords.y<<endl;
+    cout<<Cords.x<<' '<<Cords.y<<endl;
 
     return Cords;
   }
