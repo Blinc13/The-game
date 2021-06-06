@@ -191,7 +191,7 @@ int main(int argv,char **argc)
 {
     if (argv<=1)
     {
-      cout<<"Usage:\n<FileName> <ProjectFolder>"<<endl;
+      cout<<"Usage:\n"<<argc[0]<<" <ProjectFolder>"<<endl;
 
       return 1;
     }
