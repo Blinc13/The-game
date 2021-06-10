@@ -31,7 +31,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
 
 
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){hero.appendAmmo(1);}
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){hero.appendAmmo(1);}
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)&&FireDelay>DelayBetweenShots)
   {
@@ -60,6 +60,7 @@ void controlHero(Hero &hero,std::vector<std::string> &map,sf::RenderWindow &wind
     sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window.getSize(),{int(heroCords.x),int(heroCords.y)},true);
 
     if (map[cords.y][cords.x] == '1' || map[cords.y][cords.x] == '2'){map[cords.y][cords.x]=' ';hero.appendRes(1);}
+    BlockDelay=0.0F;
   }
 
 
