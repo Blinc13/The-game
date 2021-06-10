@@ -27,16 +27,16 @@ int main()
   Ui ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
   window.setFramerateLimit(60);
   imageArea area={0,0,16,29};
-  Hero hero("Sprites/Souls/Herous/character.png",area,{9*16,4*16},10);
+  Hero hero("Sprites/Souls/Herous/character.png",area,{20*16,3*16},10);
   Objects<Enemy> persons;
-  persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
+  //persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
   Cam View;
   sf::Clock Timer;
   Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
   float time;
   loadVecOfSpritesTexture("Maps/StandartMap/MapData.data",map.getVecOfTextures());
 
-  for (int k=1;k<3;k++){persons.append(Enemy("Sprites/Souls/Enemies/Enemy.png",{0,0,48,50},{k*16,4*16}));}
+  //for (int k=10;k<15;k++){persons.append(Enemy("Sprites/Souls/Enemies/Enemy.png",{0,0,48,50},{k*16,3*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
   for (int k=0;k<51;k++){cout<<SimbMapTest[k]<<endl;}
 

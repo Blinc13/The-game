@@ -50,10 +50,10 @@ private:
 public:
   static inline int getMoveButton()
   {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){return 0;}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){return 1;}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){return 2;}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){return 3;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){return 0;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){return 1;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){return 2;}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){return 3;}
 
 
     return 4;
