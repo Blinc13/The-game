@@ -1,6 +1,7 @@
 #pragma once
 #include <iomanip>
-
+#include "Widgets.hpp"
+#include <string>
 class Ui
 {
 private:
@@ -70,4 +71,34 @@ public:
     Text.setFont(TextFont);
     Text.setScale(0.5F,0.5F);
   }
+};
+
+
+class Menu
+{
+protected:
+    std::vector<Widget*> Widgets;
+public:
+    int draw()
+    {
+        int Active=-1;
+
+        for (int k=0;k<Widgets.size();k++)
+            if (Widgets[k]->show()){Active=k;}
+
+        return Active;
+    }
+
+    void addWidget(Widget *widget)
+    {Widgets.push_back(widget);}
+
+    Widget* operator[](const int k) const
+    {return Widgets[k];}
+
+    Menu(){}
+
+    ~Menu(){
+        for (int k=0;k<Widgets.size();k++)
+            delete Widgets[k];
+    }
 };

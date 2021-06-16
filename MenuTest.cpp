@@ -1,17 +1,20 @@
 #include "Widgets.hpp"
-
+#include "Ui.hpp"
+#include <iostream>
+#include "Funcs.hpp"
+using namespace std;
 
 int main()
 {
   sf::RenderWindow window(sf::VideoMode(700,500),"Test");
-  Butoon button("/home/blinc/The_game_Unstable/Sprites/Ui/objects.png","/home/blinc/The_game_Unstable/Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf",{0,0,100,100},"Hello",&window);
+  Menu *menu=loadMenuFromFile("/home/blinc/The_game_Unstable/Conf/Menu.conf",window);
 
   while (true)
   {
-    button.show();
+    menu->draw();
 
     window.display();
-    window.clear();
+    window.clear(sf::Color::Yellow);
   }
   return 0;
 }
