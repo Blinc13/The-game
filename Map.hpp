@@ -78,13 +78,13 @@ public:
 
 
 
-  Map(std::string FileDirectory,std::vector<std::string> &SimbMap1,std::vector<std::string> &SimbMap2):
-  BackMap(SimbMap1.size()),FrontMap(SimbMap2.size())
+  Map(std::string FileDirectory,std::vector<std::string> &Back,std::vector<std::string> &Front):
+  BackMap(Back.size()),FrontMap(Front.size())
   {
     MapTexture.loadFromFile(FileDirectory);
     MapSprite.setTexture(MapTexture);
-    BackMap=SimbMap1;
-    FrontMap=SimbMap2;
-  }
 
+    BackMap     =Back  ;
+    FrontMap   =Front;
+  }
 };

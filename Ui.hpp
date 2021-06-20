@@ -2,6 +2,8 @@
 #include <iomanip>
 #include "Widgets.hpp"
 #include <string>
+
+
 class Ui
 {
 private:
@@ -13,26 +15,26 @@ private:
   std::ostringstream HealthStream;
 
 
-  inline void drawLineOfElements(sf::Sprite &Sprite,sf::RenderWindow &Window,float SizeX,int Count)
+  inline void drawLineOfElements(sf::Sprite &Sprite,sf::RenderWindow *Window,float SizeX,int Count)
   {
     for (int k=0;k<Count;k++)
     {
-      Window.draw(Sprite);
+      Window->draw(Sprite);
 
       Sprite.move(SizeX,0.0F);
     }
   }
 public:
-  void drawUi(sf::RenderWindow &Window,Cam &View,int health,int bullets,int res)
+  void drawUi(sf::RenderWindow *Window,Cam *View,int health,int bullets,int res)
   {
     std::string StrHealth = std::to_string(health);
-    sf::Vector2f UiCenter = View.getPosition();
+    sf::Vector2f UiCenter = View->getPosition();
 
     HealthStream<<"- "<<std::setw(3)<<StrHealth;
     UiElements[0].setPosition(UiCenter.x-250,UiCenter.y-120);
     Text.setPosition(UiCenter.x-235,UiCenter.y-125);
     Text.setString(HealthStream.str());
-    Window.draw(Text);
+    Window->draw(Text);
 
     HealthStream.str("");
 
@@ -43,8 +45,8 @@ public:
     HealthStream<<"- "<<std::setw(3)<<res;
     Text.setPosition(UiCenter.x-235,UiCenter.y-104);
     Text.setString(HealthStream.str());
-    Window.draw(UiElements[2]);
-    Window.draw(Text);
+    Window->draw(UiElements[2]);
+    Window->draw(Text);
 
     HealthStream.str("");
 

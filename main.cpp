@@ -20,7 +20,7 @@ using namespace std;
 
 int main()
 {
-  std::vector<std::string> SimbMap,BackgroundMap;
+  /*std::vector<std::string> SimbMap,BackgroundMap;
   loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMap," ");
   loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMap,"0");
   sf::RenderWindow window(sf::VideoMode(600,300),"Test");
@@ -44,8 +44,7 @@ int main()
   icon.loadFromFile("Sprites/Ui/Icon.png");
 
   window.setIcon(icon.getSize().x,icon.getSize().y,icon.getPixelsPtr());
-  Game game();
-  /*while (true){
+  while (true){
     sf::Event event;
     time = (Timer.getElapsedTime().asMicroseconds())/8000.0F;
     Timer.restart();
@@ -79,5 +78,9 @@ int main()
     window.display();
     window.clear();
   }*/
+  Game game;
+
+  game.drawMenu();
+
   return 0;
 }
