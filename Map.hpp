@@ -1,8 +1,6 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 using namespace std;
-std::vector<std::string> SimbMapTest;
-
-std::vector<std::string> BackgroundMapTest;
 //////////////////////////////Classes///////////////////////////////
 class Map
 {

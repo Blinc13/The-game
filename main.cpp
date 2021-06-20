@@ -20,8 +20,9 @@ using namespace std;
 
 int main()
 {
-  loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMapTest," ");
-  loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMapTest,"0");
+  std::vector<std::string> SimbMap,BackgroundMap;
+  loadMapFromTextFile("Maps/StandartMap/FrontMap.map",SimbMap," ");
+  loadMapFromTextFile("Maps/StandartMap/BackMap.map",BackgroundMap,"0");
   sf::RenderWindow window(sf::VideoMode(600,300),"Test");
   Objects<Bullet> Bullets;
   Ui ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
@@ -32,15 +33,19 @@ int main()
   //persons.append(Enemy("Sprites/Ui/Center.png",{150,150,16,16},{2*16,4*16}));
   Cam View;
   sf::Clock Timer;
-  Map map("Sprites/Objects/Overworld.png",BackgroundMapTest,SimbMapTest);
+  Map map("Sprites/Objects/Overworld.png",BackgroundMap,SimbMap);
   float time;
   loadVecOfSpritesTexture("Maps/StandartMap/MapData.data",map.getVecOfTextures());
 
-  //for (int k=10;k<15;k++){persons.append(Enemy("Sprites/Souls/Enemies/Enemy.png",{0,0,48,50},{k*16,3*16}));}
+  for (int k=10;k<15;k++){persons.append(Enemy("Sprites/Souls/Enemies/Enemy.png",{0,0,48,50},{k*16,3*16}));}
   //cout<<SimbMapTest[3][3]<<endl;
-  for (int k=0;k<51;k++){cout<<SimbMapTest[k]<<endl;}
+  //for (int k=0;k<51;k++){cout<<SimbMapTest[k]<<endl;}
+  sf::Image icon;
+  icon.loadFromFile("Sprites/Ui/Icon.png");
 
-  while (true){
+  window.setIcon(icon.getSize().x,icon.getSize().y,icon.getPixelsPtr());
+  Game game();
+  /*while (true){
     sf::Event event;
     time = (Timer.getElapsedTime().asMicroseconds())/8000.0F;
     Timer.restart();
@@ -73,6 +78,6 @@ int main()
     window.draw(hero.Sprite());
     window.display();
     window.clear();
-  }
+  }*/
   return 0;
 }

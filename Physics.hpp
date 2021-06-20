@@ -61,6 +61,14 @@ public:
   X* operator [](int k) const
   {return objects[k];}
 
+  void operator =(const Objects<X> *Obj)
+  {
+    for (int k=0;k<80;k++)
+    {
+      objects[k]==Obj[k];
+    }
+  }
+
 
   Objects():objects(80),iter(objects.begin())
   {}

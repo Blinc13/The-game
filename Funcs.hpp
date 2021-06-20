@@ -61,7 +61,7 @@ void loadVecOfSpritesTexture(const std::string FileDirectory,std::vector<imageAr
   }
 }
 
-Menu* loadMenuFromFile(const std::string FileDirectory,sf::RenderWindow &window)
+Menu* loadMenuFromFile(const std::string FileDirectory,sf::RenderWindow *window)
 {
   Menu *MenuPtr=new Menu();
   fstream File(FileDirectory);
@@ -74,8 +74,11 @@ Menu* loadMenuFromFile(const std::string FileDirectory,sf::RenderWindow &window)
 
   for (int k=0;k<NumOfWidgets;k++)
   {
-    File>>NameOfWidget>>TextureFile>>FontFile>>Text>>Position.x>>Position.y;
-    MenuPtr->addWidget(new Butoon(TextureFile,FontFile,{0,0,100,100},Text,&window,Position));
+    File>>NameOfWidget>>TextureFile>>FontFile>>Area.x>>Area.y>>Area.Width>>Area.Heigth>>Text>>Position.x>>Position.y;
+
+    if (NameOfWidget=="Button"){
+      MenuPtr->addWidget(new Butoon(TextureFile,FontFile,Area,Text,window,Position));
+    }
   }
 
 
