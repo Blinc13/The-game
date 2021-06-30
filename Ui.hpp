@@ -50,7 +50,7 @@ public:
 
     HealthStream.str("");
 
-    Window.draw(UiElements[0]);
+    Window->draw(UiElements[0]);
     //std::cout<<"complite"<<std::endl;
   }
 

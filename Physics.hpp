@@ -13,14 +13,14 @@ private:
   typename std::vector<X*>::iterator iter;
 
 public:
-  void Update(sf::RenderWindow &Window,std::vector<std::string> *map,const sf::Vector2f point,const float time)
+  void Update(sf::RenderWindow *Window,std::vector<std::string> *map,const sf::Vector2f point,const float time)
   {
     for (int k=0;k<objects.size()-1;k++)
     {
       if (objects[k]==NULL){continue;}
 
       Colision(objects[k],map,time);
-      Window.draw(objects[k]->draw());
+      Window->draw(objects[k]->draw());
       objects[k]->Update(point,map,time);
 
       if (objects[k]->Remove){delete objects[k];objects[k]=NULL;}
@@ -49,11 +49,11 @@ public:
     }
   }
 
-  void append(X object)
+  void append(X *object)
   {
     if (iter==objects.end()){iter=objects.begin();}
     delete *iter;
-    *iter=new X(object);
+    *iter=object;
     iter++;
   }
 
@@ -109,7 +109,7 @@ void Colision(H *Obj,std::vector<std::string> *Map,const float time)
 }
 
 template<class x,class y>
-void Damage(Objects<x> *Enemys,y* hero)
+void Damage(Objects<x> &Enemys,y* hero)
 {
   const sf::Vector2f HeroPosition={trunc(hero->getCords().x/16),trunc(hero->getCords().y/16)};
   for (int k=0;k<80;k++)

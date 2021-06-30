@@ -9,10 +9,17 @@
 #include "Map.hpp"
 #include "Souls.hpp"
 #include "View.hpp"
+#include "Funcs.hpp"
+#include "Physics.hpp"
+#include "Objects.hpp"
 //#include <thread>
 //#include <chrono>
 
-
+struct EngineTime
+{
+  float time;
+  sf::Clock *Timer;
+};
 
 
 class Game
@@ -26,6 +33,7 @@ private:
   Ui *ui;
   Objects<Enemy> *Enemys;
   Objects<Bullet>   *Bullets;
+  EngineTime EngineParams;
 
   bool isServer=true;
 
@@ -47,7 +55,7 @@ public:
     {
       std::vector<std::string> FrontMap,BackMap;
 
-      hero=new Hero(HeroTextureFileDirectory,HeroTextureArea,{20*16,3*16},10);
+      hero=new Hero(HeroTextureFileDirectory,HeroTextureArea,{20.0F*16.0F,3.0F*16.0F},10);
       ui=new Ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
 
       loadMapFromTextFile(MapTextureFileDirectory+"/FrontMap.map",FrontMap," ");
@@ -82,18 +90,21 @@ public:
 
     void RunGame()
     {
-      while (true)
+      EngineParams.time=0;
+      EngineParams.Timer=new sf::Clock();
+
+      /*while (true)
       {
-        float time = (Timer.getElapsedTime().asMicroseconds())/8000.0F;
-        Timer.restart();
+        EngineParams.time = (EngineParams..getElapsedTime().asMicroseconds())/8000.0F;
+        EngineParams.Timer->restart();
         controlHero(hero,map->getFrontMap(),window,Bullets,time);
-        map->drawMap(window);
-        Bullets->Update(window,map->getFrontMap(),hero.getCords(),time);
-        ui->drawUi(window,View,hero->getHealth(),hero->getAmmo()/10,hero->getRes());
+        map->drawMap(*window);
+        Bullets->Update(window,map->getFrontMap(),hero.getCords(),EngineParams->time);
+        ui->drawUi(window,Camera,hero->getHealth(),hero->getAmmo()/10,hero->getRes());
 
         Enemys->Update(window,map->getFrontMap(),hero->getCords(),time);
-        Enemys->Compire(Bullets);
-        Damage(Enemys,hero);
+        Enemys->Compire(*Bullets);
+        Damage(*Enemys,hero);
 
         if (hero->getHealth()<=0)
         {
@@ -105,12 +116,12 @@ public:
         ActionsOfWindow();
 
         Camera->setPosition(hero->getCords());
-        window->setView(View->getCamForDrav());
+        window->setView(Camera->getCamForDrav());
 
         window->draw(hero->Sprite());
         window->display();
         window->clear();
-      }
+      }*/
     }
 
   Game()

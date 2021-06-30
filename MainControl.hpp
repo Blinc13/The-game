@@ -57,7 +57,7 @@ void controlHero(Hero *hero,std::vector<std::string> *map,sf::RenderWindow *wind
      (MousePosition.x<=window->getSize().x && MousePosition.y<=window->getSize().y))
   {
     sf::Vector2f heroCords=hero->getCords();
-    sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(window),window->getSize(),{int(heroCords.x),int(heroCords.y)},true);
+    sf::Vector2i cords=func::getPointOnMapForMouse(sf::Mouse::getPosition(*window),window->getSize(),{int(heroCords.x),int(heroCords.y)},true);
 
     if (map[cords.y][cords.x] == '1' || map[cords.y][cords.x] == '2'){map[cords.y][cords.x]=' ';hero->appendRes(1);}
     BlockDelay=0.0F;
