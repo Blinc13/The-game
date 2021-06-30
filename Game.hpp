@@ -51,16 +51,17 @@ private:
     return false;
   }
 public:
-    void init(const std::string HeroTextureFileDirectory,const imageArea HeroTextureArea,const std::string MapTextureFileDirectory,const std::string MapDataFilesDirectory)
+    void init(const std::string HeroTextureFileDirectory,const imageArea HeroTextureArea,const std::string MapDataFilesDirectory)
     {
       std::vector<std::string> FrontMap,BackMap;
 
       hero=new Hero(HeroTextureFileDirectory,HeroTextureArea,{20.0F*16.0F,3.0F*16.0F},10);
       ui=new Ui("Sprites/Ui/objects.png","Fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf");
 
-      loadMapFromTextFile(MapTextureFileDirectory+"/FrontMap.map",FrontMap," ");
-      loadMapFromTextFile(MapTextureFileDirectory+"/BackMap.map" ,BackMap ,"0");
+      loadMapFromTextFile(MapDataFilesDirectory+"/FrontMap.map",FrontMap," ");
+      loadMapFromTextFile(MapDataFilesDirectory+"/BackMap.map" ,BackMap ,"0");
       map=new Map("Sprites/Objects/Overworld.png",BackMap,FrontMap);
+      loadVecOfSpritesTexture(MapDataFilesDirectory+"/MapData.data",map->getVecOfTextures());
 
       Enemys=new Objects<Enemy>();
       Bullets=new     Objects<Bullet>();
@@ -77,6 +78,7 @@ public:
         {
           case 0:
             Update=false;
+            RunGame();
             break;
           case 1:
             setServer();
@@ -93,18 +95,18 @@ public:
       EngineParams.time=0;
       EngineParams.Timer=new sf::Clock();
 
-      /*while (true)
+      while (true)
       {
-        EngineParams.time = (EngineParams..getElapsedTime().asMicroseconds())/8000.0F;
+        EngineParams.time = (EngineParams.Timer->getElapsedTime().asMicroseconds())/8000.0F;
         EngineParams.Timer->restart();
-        controlHero(hero,map->getFrontMap(),window,Bullets,time);
+        controlHero(hero,map->getFrontMap(),window,Bullets,EngineParams.time);
         map->drawMap(*window);
-        Bullets->Update(window,map->getFrontMap(),hero.getCords(),EngineParams->time);
+        //Bullets->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
         ui->drawUi(window,Camera,hero->getHealth(),hero->getAmmo()/10,hero->getRes());
 
-        Enemys->Update(window,map->getFrontMap(),hero->getCords(),time);
-        Enemys->Compire(*Bullets);
-        Damage(*Enemys,hero);
+       // Enemys->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
+        //Enemys->Compire(*Bullets);
+       // Damage(*Enemys,hero);
 
         if (hero->getHealth()<=0)
         {
@@ -121,7 +123,7 @@ public:
         window->draw(hero->Sprite());
         window->display();
         window->clear();
-      }*/
+      }
     }
 
   Game()

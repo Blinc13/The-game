@@ -101,11 +101,12 @@ void Colision(H *Obj,std::vector<std::string> *Map,const float time)
 
   //std::cout<<int(C.y)<<std::endl
   //<<int(C.x)<<std::endl;
+  std::cout<<(Map[0][1][1])<<std::endl;
 
-  if (Map[C.y][C.x-1]!=' '&&(CordsFloat.x-trunc(CordsFloat.x))<0.9991F/time){Obj->blockSide(2,false);}
-  if (Map[C.y-1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))<0.9991F/time){Obj->blockSide(0,false);}
-  if (Map[C.y+1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))>0.9991F/time){Obj->blockSide(1,false);}
-  if (Map[C.y][C.x+1]!=' '&&(CordsFloat.x-trunc(CordsFloat.x))>0.9991f/time){Obj->blockSide(3,false);}
+  if (Map[0][C.y][C.x-1]!=' '&&(CordsFloat.x-trunc(CordsFloat.x))<0.9991F/time){Obj->blockSide(2,false);}
+  if (Map[0][C.y-1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))<0.9991F/time){Obj->blockSide(0,false);}
+  if (Map[0][C.y+1][C.x]!=' '&&(CordsFloat.y-trunc(CordsFloat.y))>0.9991F/time){Obj->blockSide(1,false);}
+  if (Map[0][C.y][C.x+1]!=' '&&(CordsFloat.x-trunc(CordsFloat.x))>0.9991f/time){Obj->blockSide(3,false);}
 }
 
 template<class x,class y>

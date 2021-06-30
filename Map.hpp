@@ -33,11 +33,11 @@ public:
   {BackMap[x][y]=char(BlockNumber+48);}
 
 
-  std::vector<std::string> &getFrontMap()
-  {return FrontMap;}
+  std::vector<std::string> *getFrontMap()
+  {return &FrontMap;}
 
-  std::vector<std::string> &getBackMap()
-  {return BackMap;}
+  std::vector<std::string> *getBackMap()
+  {return &BackMap;}
 
   std::vector<imageArea> &getVecOfTextures()
   {return SpritesArea;}

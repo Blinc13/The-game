@@ -80,6 +80,7 @@ int main()
   }*/
   Game game;
 
+  game.init("Sprites/Souls/Herous/character.png",{0,0,16,29},"Maps/StandartMap");
   game.drawMenu();
 
   return 0;
