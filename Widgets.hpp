@@ -55,7 +55,7 @@ public:
 
         if ((mousePos.x >= Position.x && mousePos.x <= Position.x+Size.x) && (mousePos.y >= Position.y && mousePos.y <= Position.y+Size.y))
         {
-          ButtonSprite.setTextureRect(IntRect(TextureArea.x+TextureArea.Width,TextureArea.y,TextureArea.Width,TextureArea.Heigth));
+          ButtonSprite.setTextureRect(IntRect(TextureArea.x,TextureArea.y+TextureArea.Heigth,TextureArea.Width,TextureArea.Heigth));
 
           if (Mouse::isButtonPressed(Mouse::Left)){draw();return true;}
         }
@@ -66,7 +66,7 @@ public:
         return false;
     }
 
-    Butoon(const string TextureFileDirectory,const string FontFileDirectory,imageArea Area,const string str,RenderWindow *ptr,const Vector2i pos={0,0}):Widget({Area.Width,Area.Heigth},pos,ptr)
+    Butoon(const string TextureFileDirectory,const string FontFileDirectory,imageArea Area,sf::Vector2f size,const string str,RenderWindow *ptr,const Vector2i pos={0,0}):Widget({(float)Area.Width*size.x,(float)Area.Heigth*size.y},pos,ptr)
     {
       ButtonTexture.loadFromFile(TextureFileDirectory);
       TextFont.loadFromFile(FontFileDirectory);
@@ -74,6 +74,7 @@ public:
       ButtonSprite.setTexture(ButtonTexture);
       ButtonSprite.setTextureRect(IntRect(Area.x,Area.y,Area.Width,Area.Heigth));
       ButtonSprite.setPosition(pos.x,pos.y);
+      ButtonSprite.setScale(size);
       Title.setFont(TextFont);
       Title.setString(str);
       Title.setPosition(pos.x,pos.y);

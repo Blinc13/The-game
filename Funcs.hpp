@@ -69,15 +69,16 @@ Menu* loadMenuFromFile(const std::string FileDirectory,sf::RenderWindow *window)
   std::string NameOfWidget,TextureFile,FontFile,Text;
   sf::Vector2i Position;
   imageArea Area;
+  sf::Vector2f Size;
 
   File>>NumOfWidgets;
 
   for (int k=0;k<NumOfWidgets;k++)
   {
-    File>>NameOfWidget>>TextureFile>>FontFile>>Area.x>>Area.y>>Area.Width>>Area.Heigth>>Text>>Position.x>>Position.y;
+    File>>NameOfWidget>>TextureFile>>FontFile>>Area.x>>Area.y>>Area.Width>>Area.Heigth>>Text>>Position.x>>Position.y>>Size.x>>Size.y;
 
     if (NameOfWidget=="Button"){
-      MenuPtr->addWidget(new Butoon(TextureFile,FontFile,Area,Text,window,Position));
+      MenuPtr->addWidget(new Butoon(TextureFile,FontFile,Area,Size,Text,window,Position));
     }
   }
 

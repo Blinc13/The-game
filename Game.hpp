@@ -85,6 +85,8 @@ public:
             break;
         }
 
+        if (ActionsOfWindow()){return;}
+
         window->display();
         window->clear();
       }
@@ -101,12 +103,12 @@ public:
         EngineParams.Timer->restart();
         controlHero(hero,map->getFrontMap(),window,Bullets,EngineParams.time);
         map->drawMap(*window);
-        //Bullets->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
+        Bullets->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
         ui->drawUi(window,Camera,hero->getHealth(),hero->getAmmo()/10,hero->getRes());
 
-       // Enemys->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
-        //Enemys->Compire(*Bullets);
-       // Damage(*Enemys,hero);
+        Enemys->Update(window,map->getFrontMap(),hero->getCords(),EngineParams.time);
+        Enemys->Compire(*Bullets);
+       Damage(*Enemys,hero);
 
         if (hero->getHealth()<=0)
         {
@@ -115,7 +117,7 @@ public:
           hero->setHealth(100.0F);
         }
 
-        ActionsOfWindow();
+        if (ActionsOfWindow()){break;}
 
         Camera->setPosition(hero->getCords());
         window->setView(Camera->getCamForDrav());
