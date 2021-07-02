@@ -63,7 +63,7 @@ void loadVecOfSpritesTexture(const std::string FileDirectory,std::vector<imageAr
 
 Menu* loadMenuFromFile(const std::string FileDirectory,sf::RenderWindow *window)
 {
-  Menu *MenuPtr=new Menu();
+  Menu *MenuPtr=new Menu("Sprites/Ui/MenuGround.png",window);
   fstream File(FileDirectory);
   int NumOfWidgets;
   std::string NameOfWidget,TextureFile,FontFile,Text;

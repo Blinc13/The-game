@@ -80,10 +80,15 @@ class Menu
 {
 protected:
     std::vector<Widget*> Widgets;
+    sf::Sprite BackImage;
+    sf::Texture BackImageTexture;
+    sf::RenderWindow *window;
 public:
     int draw()
     {
         int Active=-1;
+
+        window->draw(BackImage);
 
         for (int k=0;k<Widgets.size();k++)
             if (Widgets[k]->show()){Active=k;}
@@ -97,7 +102,12 @@ public:
     Widget* operator[](const int k) const
     {return Widgets[k];}
 
-    Menu(){}
+    Menu(std::string FileDirectory,sf::RenderWindow *ptr)
+    {
+      BackImageTexture.loadFromFile(FileDirectory);
+      BackImage.setTexture(BackImageTexture);
+      window=ptr;
+    }
 
     ~Menu(){
         for (int k=0;k<Widgets.size();k++)

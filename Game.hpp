@@ -64,6 +64,8 @@ public:
       loadVecOfSpritesTexture(MapDataFilesDirectory+"/MapData.data",map->getVecOfTextures());
 
       Enemys=new Objects<Enemy>();
+      for (int k=0;k<10;k++)
+        Enemys->append(new Enemy("Sprites/Souls/Enemies/Enemy.png",{0,0,48,50},{2*16,2*16}));
       Bullets=new     Objects<Bullet>();
 
       window->setFramerateLimit(60);
