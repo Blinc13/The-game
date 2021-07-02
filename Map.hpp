@@ -1,8 +1,6 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 using namespace std;
-std::vector<std::string> SimbMapTest;
-
-std::vector<std::string> BackgroundMapTest;
 //////////////////////////////Classes///////////////////////////////
 class Map
 {
@@ -35,11 +33,11 @@ public:
   {BackMap[x][y]=char(BlockNumber+48);}
 
 
-  std::vector<std::string> &getFrontMap()
-  {return FrontMap;}
+  std::vector<std::string> *getFrontMap()
+  {return &FrontMap;}
 
-  std::vector<std::string> &getBackMap()
-  {return BackMap;}
+  std::vector<std::string> *getBackMap()
+  {return &BackMap;}
 
   std::vector<imageArea> &getVecOfTextures()
   {return SpritesArea;}
@@ -80,13 +78,13 @@ public:
 
 
 
-  Map(std::string FileDirectory,std::vector<std::string> &SimbMap1,std::vector<std::string> &SimbMap2):
-  BackMap(SimbMap1.size()),FrontMap(SimbMap2.size())
+  Map(std::string FileDirectory,std::vector<std::string> &Back,std::vector<std::string> &Front):
+  BackMap(Back.size()),FrontMap(Front.size())
   {
     MapTexture.loadFromFile(FileDirectory);
     MapSprite.setTexture(MapTexture);
-    BackMap=SimbMap1;
-    FrontMap=SimbMap2;
-  }
 
+    BackMap     =Back  ;
+    FrontMap   =Front;
+  }
 };

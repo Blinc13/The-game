@@ -120,10 +120,10 @@ public:
   }
 
                             //For future//
-  void fire(sf::Vector2f speed,Objects<Bullet> &obj)
+  void fire(sf::Vector2f speed,Objects<Bullet> *obj)
   {
     if (Amunition<=0){return;}
-    obj.append(Bullet("Sprites/Ui/Center.png",{200,150,4,4},getCords(),{speed.x,speed.y}));
+    obj->append(new Bullet("Sprites/Ui/Center.png",{200,150,4,4},getCords(),{speed.x,speed.y}));
 
     subtractAmmo(1);
   }
@@ -298,10 +298,10 @@ public:
     XYSpeed={0.0F,0.0F};
   }
 
-  void Update(const sf::Vector2f PointCords,const std::vector<std::string> &map,const float time)
+  void Update(const sf::Vector2f PointCords,const std::vector<std::string> *map,const float time)
   {
     //cout<<4<<endl;
-    if (moving){findPath(map,PointCords);s=0;}
+    if (moving){findPath(*map,PointCords);s=0;}
 
     //cout<<trunc(Body.getPosition().x/16)<<trunc(Body.getPosition().y/16)<<endl;
 

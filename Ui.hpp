@@ -1,5 +1,8 @@
 #pragma once
 #include <iomanip>
+#include "Widgets.hpp"
+#include <string>
+
 
 class Ui
 {
@@ -12,26 +15,26 @@ private:
   std::ostringstream HealthStream;
 
 
-  inline void drawLineOfElements(sf::Sprite &Sprite,sf::RenderWindow &Window,float SizeX,int Count)
+  inline void drawLineOfElements(sf::Sprite &Sprite,sf::RenderWindow *Window,float SizeX,int Count)
   {
     for (int k=0;k<Count;k++)
     {
-      Window.draw(Sprite);
+      Window->draw(Sprite);
 
       Sprite.move(SizeX,0.0F);
     }
   }
 public:
-  void drawUi(sf::RenderWindow &Window,Cam &View,int health,int bullets,int res)
+  void drawUi(sf::RenderWindow *Window,Cam *View,int health,int bullets,int res)
   {
     std::string StrHealth = std::to_string(health);
-    sf::Vector2f UiCenter = View.getPosition();
+    sf::Vector2f UiCenter = View->getPosition();
 
     HealthStream<<"- "<<std::setw(3)<<StrHealth;
     UiElements[0].setPosition(UiCenter.x-250,UiCenter.y-120);
     Text.setPosition(UiCenter.x-235,UiCenter.y-125);
     Text.setString(HealthStream.str());
-    Window.draw(Text);
+    Window->draw(Text);
 
     HealthStream.str("");
 
@@ -42,12 +45,12 @@ public:
     HealthStream<<"- "<<std::setw(3)<<res;
     Text.setPosition(UiCenter.x-235,UiCenter.y-104);
     Text.setString(HealthStream.str());
-    Window.draw(UiElements[2]);
-    Window.draw(Text);
+    Window->draw(UiElements[2]);
+    Window->draw(Text);
 
     HealthStream.str("");
 
-    Window.draw(UiElements[0]);
+    Window->draw(UiElements[0]);
     //std::cout<<"complite"<<std::endl;
   }
 
@@ -70,4 +73,44 @@ public:
     Text.setFont(TextFont);
     Text.setScale(0.5F,0.5F);
   }
+};
+
+
+class Menu
+{
+protected:
+    std::vector<Widget*> Widgets;
+    sf::Sprite BackImage;
+    sf::Texture BackImageTexture;
+    sf::RenderWindow *window;
+public:
+    int draw()
+    {
+        int Active=-1;
+
+        window->draw(BackImage);
+
+        for (int k=0;k<Widgets.size();k++)
+            if (Widgets[k]->show()){Active=k;}
+
+        return Active;
+    }
+
+    void addWidget(Widget *widget)
+    {Widgets.push_back(widget);}
+
+    Widget* operator[](const int k) const
+    {return Widgets[k];}
+
+    Menu(std::string FileDirectory,sf::RenderWindow *ptr)
+    {
+      BackImageTexture.loadFromFile(FileDirectory);
+      BackImage.setTexture(BackImageTexture);
+      window=ptr;
+    }
+
+    ~Menu(){
+        for (int k=0;k<Widgets.size();k++)
+            delete Widgets[k];
+    }
 };

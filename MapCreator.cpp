@@ -222,8 +222,8 @@ int main(int argv,char **argc)
         if (WindowEvent.type==sf::Event::Closed){window.close();break;}
       }
       if (Key::isKeyPressed(Key::S)){
-        saveMapFile(ProgectDirectory+"/FrontMap.map",map.getFrontMap());
-        saveMapFile(ProgectDirectory+"/BackMap.map",map.getBackMap());
+        saveMapFile(ProgectDirectory+"/FrontMap.map",*map.getFrontMap());
+        saveMapFile(ProgectDirectory+"/BackMap.map",*map.getBackMap());
     }
     if (Key::isKeyPressed(Key::X)){window.close();return 0;}
 
@@ -235,8 +235,8 @@ int main(int argv,char **argc)
       window.clear();
     }
 
-    saveMapFile(ProgectDirectory+"/FrontMap.map",map.getFrontMap());
-    saveMapFile(ProgectDirectory+"/BackMap.map",map.getBackMap());
+    saveMapFile(ProgectDirectory+"/FrontMap.map",*map.getFrontMap());
+    saveMapFile(ProgectDirectory+"/BackMap.map",*map.getBackMap());
 
     return 0;
 }
